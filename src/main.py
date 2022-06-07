@@ -10,9 +10,9 @@ def gnss_ir_gui():
     GUI Framework
     '''
     # gui layout for generate rinex and compact
-    layout = [[sg.Input("E:/Studium/MA/software/teqc/teqc.exe",key='teqc'), \
+    layout = [[sg.Input("C:/Users/yuziq/Documents/gnss_ir_analyze/tool/teqc.exe",key='teqc'), \
                 sg.FileBrowse('location for teqc.exe')],
-            [sg.Input("E:/Studium/MA/data/20220526/2/5856_0526_213047.m00",key='raw_data'),\
+            [sg.Input("C:/Users/yuziq/Documents/gnss_data/5856_0526_213047.m00",key='raw_data'),\
                 sg.FileBrowse('raw_data',key='raw_data')],
             [sg.Text('Please give a roughly beginning measuring time')],
             [sg.Text('year'),sg.InputText('2022',key='year', size=(4,1)),sg.Text('month'),\
