@@ -5,11 +5,14 @@ systems
 '''
 
 # pylint: disable=invalid-name
-import math
-SEMIMAJOR_AXIS = 6.3781370e6
-ECCENTRICITY = 0.011068213498220
+import numpy
 
-def xyz2latlon(x,y,z):
+A_WGS84 = 6378137.0
+B_WGS84 = 6356752.3142
+F_WGS84 = 1/298.257223563
+E_WGS84 = numpy.sqrt((A_WGS84*A_WGS84-B_WGS84*B_WGS84)/(A_WGS84*A_WGS84))
+
+def xyz2latlon(x_ecef,y_ecef,z_ecef):
     '''
     Transformation from xyz system
     into lat, lon, h
@@ -17,21 +20,17 @@ def xyz2latlon(x,y,z):
         x,y,z: coordinates in xyz system
     '''
 
-    h_threshold = 0.001
-    phi_threshold = math.pi / (3600 * 180)
-    lon = math.atan2(y,x)
-    p = math.sqrt(x**2 + y**2)
-    h0 = 0
-    phi0 = math.atan2(z, (p * (1 - ECCENTRICITY**2)))
-    n0 = SEMIMAJOR_AXIS / (1 - (ECCENTRICITY**2) * (math.sin(phi0)**2))
-    h1 = p / math.cos(phi0) - n0
-    phi1 = math.atan2(z * (n0+h1), (p * (n0 * (1-ECCENTRICITY**2) + h1)))
-    while (abs(h1-h0) > h_threshold) | (abs(phi1-phi0) > phi_threshold):
-        phi0 = phi1
-        h0 = h1
-        n0 = SEMIMAJOR_AXIS / math.sqrt(1 - ECCENTRICITY**2 * (math.sin(phi0)**2))
-        h1 = p / math.cos(phi0) - n0
-        phi1 = math.atan2(z * (n0 + h1), (p * (n0 * (1 - ECCENTRICITY**2) + h1)))
-    lat = phi1
-    height = h1
-    return (lat, lon, height)
+    itera_lat = 10
+
+    lon_ECEF = numpy.arctan(y_ecef/x_ecef)
+    p_ECEF = numpy.sqrt(x_ecef*x_ecef+y_ecef*y_ecef)
+    lat_ECEF = numpy.arctan((z_ecef/p_ECEF)*((1-E_WGS84*E_WGS84)**(-1)))
+
+    for i in range(itera_lat):
+        bajo = numpy.sqrt((A_WGS84*A_WGS84*(numpy.cos(lat_ECEF))**2)\
+            + (B_WGS84*B_WGS84*(numpy.sin(lat_ECEF))**2))
+        N_ECEF = (A_WGS84*A_WGS84)/bajo
+        h_ECEF = (p_ECEF/numpy.cos(lat_ECEF))-N_ECEF
+        lat_ECEF = numpy.arctan((z_ecef/p_ECEF) \
+            * (1-(E_WGS84*E_WGS84)*(N_ECEF/(N_ECEF+h_ECEF)))**(-1))
+    return(lat_ECEF,lon_ECEF,h_ECEF)
