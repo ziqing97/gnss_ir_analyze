@@ -4,8 +4,8 @@ This script extracts the data from file with
 are generated from teqc.
 
 Author: Ziqing Yu
-generated on 04/06/2022
-last edited on 04/06/2022
+generated on 12/06/2022
+last edited on 12/06/2022
 """
 from datetime import datetime,timezone,timedelta
 import numpy as np
@@ -43,7 +43,8 @@ def read_compact_data(file_name):
         delta_time_string = timedelta(seconds=float(line_head[0]))
         if int(line_head[1]) != -1:
             satellite_count = int(line_head[1])
-            for i in range(2,satellite_count+1):
+            satellite_list_temp = []
+            for i in range(2,satellite_count+2):
                 satellite_list_temp.append(line_head[i])
                 if not line_head[i] in data_dict:
                     data_dict[line_head[i]]={}
@@ -51,12 +52,14 @@ def read_compact_data(file_name):
                     data_dict[line_head[i]][data_type] = []
         file_line = file.readline()
         data_list = file_line.split()
-        for i in range(0,satellite_count-1):
+        for i in range(0,satellite_count):
             data_dict[satellite_list_temp[i]][data_type].append(float(data_list[i]))
             data_dict[satellite_list_temp[i]]["time"].append(start_time+delta_time_string)
         file_line = file.readline()
+
     # close file
     file.close()
+
     # converse data to numpy array
     for key,value in data_dict.items():
         data_dict[key][data_type] = np.asarray(value[data_type])
