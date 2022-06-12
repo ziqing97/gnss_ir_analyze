@@ -22,9 +22,9 @@ def call_teqc(raw_data, teqc_path, receiver_arg, main_result_name, time_arg):
 
     teqc_generate_rinex_command = teqc_path + " " + receiver_arg + " " + time_arg + " " +\
         add_obs_arg + " " + add_nav_arg + " " + raw_data
-    os.popen(teqc_generate_rinex_command)
+    os.system(teqc_generate_rinex_command)
 
-    teqc_generate_compact_commad = teqc_path + " +qc +plus -nav " + main_result_name +\
+    teqc_generate_compact_commad = teqc_path + " +qc +plot -nav " + main_result_name +\
         ".gps,"+ main_result_name + ".glo,"+ main_result_name + ".gal" + " " +\
             main_result_name + ".obs" + " > " + main_result_name + ".qcq"
-    os.popen(teqc_generate_compact_commad) # somehow this doesn't work well
+    os.system(teqc_generate_compact_commad)
