@@ -8,6 +8,7 @@ generated on 12/06/2022
 last edited on 12/06/2022
 """
 from datetime import datetime,timezone,timedelta
+import os
 import numpy as np
 
 def read_compact_data(file_name):
@@ -64,3 +65,35 @@ def read_compact_data(file_name):
     for key,value in data_dict.items():
         data_dict[key][data_type] = np.asarray(value[data_type])
     return data_dict
+
+def generate_database(main_path):
+    """
+    This script reads all 4 necessary compact file
+    and returns all result in a dict
+    Args:
+        main_path: the path where the files exist
+    Returns:
+        A dictionary which stores all ele, azi, sn1
+        and sn2 data.
+    """
+
+    file_list = os.listdir(main_path)
+    for item in file_list:
+        file_ext = os.path.splitext(item)
+        ext = file_ext[1]
+        if ext == '.sn1':
+            sn1_file = main_path + item
+        if ext == '.sn2':
+            sn2_file = main_path + item
+        if ext == '.ele':
+            ele_file = main_path + item
+        if ext == '.azi':
+            azi_file = main_path + item
+
+    sn1_data = read_compact_data(sn1_file)
+    sn2_data = read_compact_data(sn2_file)
+    ele_data = read_compact_data(ele_file)
+    azi_data = read_compact_data(azi_file)
+    data_list = {'sn1':sn1_data,'sn2':sn2_data,'ele':ele_data,'azi':azi_data}
+    return data_list
+    
