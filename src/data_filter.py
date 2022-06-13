@@ -45,11 +45,11 @@ def generate_dataframe(main_path):
             df_snr2 = pd.DataFrame({'time':sn2_data[satellite_code]['time'],\
                 'snr2':sn2_data[satellite_code]['sn2']})
         else:
-            df_snr2 = pd.DataFrame({'time':[],'snr1':[]})
+            df_snr2 = pd.DataFrame({'time':[],'snr2':[]})
 
-        dataframe = pd.merge(df_azimut,df_elevation,on=['time'],how='inner')
-        dataframe = pd.merge(dataframe,df_snr1,on=['time'],how='inner')
-        dataframe = pd.merge(dataframe,df_snr2,on=['time'],how='inner')
+        dataframe = pd.merge(df_azimut,df_elevation,on=['time'],how='left')
+        dataframe = pd.merge(dataframe,df_snr1,on=['time'],how='left')
+        dataframe = pd.merge(dataframe,df_snr2,on=['time'],how='left')
         dataframe_dict[satellite_code] = dataframe
     return dataframe_dict
 
@@ -64,6 +64,9 @@ def azimut_filter(dataframe,azimut_mask):
     Returns:
         dataframe after azimut filtering
     '''
+    index = dataframe['azimut']<0
+    dataframe.loc[index,'azimut'] = dataframe.loc[index,'azimut']+360
+
     if azimut_mask[0] < azimut_mask[1]:
         azimut_index = (dataframe['azimut'] > azimut_mask[0]) & \
             (dataframe['azimut'] < azimut_mask[1])
