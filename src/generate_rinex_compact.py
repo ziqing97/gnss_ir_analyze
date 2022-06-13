@@ -4,13 +4,15 @@ the compact file for snr, elevation and azimut.
 """
 import os
 
-def call_teqc(raw_data, teqc_path, receiver_arg, main_result_name, time_arg):
+def call_teqc(raw_data, receiver_arg, main_result_name, time_arg):
     """
     this function calls teqc.exe
     Arg:
         raw_data: full name of the GNSS raw data
 
     """
+    teqc_path = os.path.abspath('../tool/teqc.exe')
+
     target_folder = os.path.dirname(raw_data)
     main_result_name = target_folder + main_result_name
 
