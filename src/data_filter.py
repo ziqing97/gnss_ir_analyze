@@ -64,7 +64,7 @@ def azimut_filter(dataframe,azimut_mask):
     Returns:
         dataframe after azimut filtering
     '''
-    index = dataframe['azimut']<0
+    index = dataframe['azimut'] < 0
     dataframe.loc[index,'azimut'] = dataframe.loc[index,'azimut']+360
 
     if azimut_mask[0] < azimut_mask[1]:
