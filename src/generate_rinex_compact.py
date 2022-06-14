@@ -1,6 +1,9 @@
 """
 This script uses teqc to generate the rinex n/o file and
 the compact file for snr, elevation and azimut.
+
+Author: Ziqing Yu
+Last edited on 13/06/2022
 """
 import os
 

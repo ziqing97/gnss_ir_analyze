@@ -2,6 +2,9 @@
 This scipt estimate the height between the
 GNSS antenne and the water surface using lomb-
 scargle algorithm
+
+Author: Ziqing Yu
+Last edited on 14/06/2022
 '''
 # pylint: disable=invalid-name
 
@@ -14,7 +17,16 @@ WAVELENTH_S1 = 0.1905 # meter
 
 def split_result(dataframe,time_interval,min_height,max_height):
     '''
-    function docu
+    this function does the GNSS-IR analysis for one satellite.
+    Args:
+        dataframe: dataframe including time, azimut, elevation
+                   snr1 and snr2
+        time_interval: int, time interval in minutes
+        min_height and max_height: the possible heiht range
+    Returns:
+        time_list: a list of time where a height is estimated
+        height_list: the estimated height
+        azimut_list: the average azimut
     '''
     time_delta = timedelta(minutes=time_interval)
 
@@ -39,7 +51,13 @@ def split_result(dataframe,time_interval,min_height,max_height):
 
 def estimate_height(dataframe_in_interval, min_height, max_height):
     '''
-    function documents
+    This function uses LSP to estimate the height:
+    Args:
+        dataframe_in_interval: dataframe including time, azimut, elevation
+                   snr1 and snr2
+        min_height and max_height: the possible heiht range
+    Returns:
+        height: the estimated height during the given time
     '''
 
     dataframe_in_interval_sort = dataframe_in_interval.sort_values(by='elevation')

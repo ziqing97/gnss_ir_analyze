@@ -2,9 +2,13 @@
 This script provides several function to do the
 transformation between differennt coordinate
 systems
+
+Author: Ziqing Yu
+Last edited on 10/06/2022
 '''
 
 # pylint: disable=invalid-name
+# pylint: disable=unused-variable
 import numpy
 
 A_WGS84 = 6378137.0

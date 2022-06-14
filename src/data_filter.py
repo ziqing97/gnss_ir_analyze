@@ -2,6 +2,9 @@
 This script generates for each satellite a pands
 dataframe and filters the data so that they are in
 a right elevation and azimut range
+
+Author: Ziqing Yu
+Last edited on 13/06/2022
 '''
 
 import pandas as pd

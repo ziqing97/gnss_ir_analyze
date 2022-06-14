@@ -1,5 +1,8 @@
 """
 main function for GNSS-R analysis
+
+Author: Ziqing Yu
+Last edited on 13/06/2022
 """
 
 import PySimpleGUI as sg
