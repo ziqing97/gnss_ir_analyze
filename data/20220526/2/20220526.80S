@@ -1,0 +1,100 @@
+version: teqc  2019Feb25
+
+ SV+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||+ SV
+Obs|                                                                        |Obs
+Pos|                                                                        |Pos
+Clk|                                                                        |Clk
+   +||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||+   
+00:00                                                                      00:00
+1980 Jan  1                                                          1980 Jan  1
+
+*********************
+QC of TI-ROM file(s) : E:/OneDrive/Studium/MA/data/20220526/2/20220526.obs
+input RnxNAV file(s) : E:/OneDrive/Studium/MA/data/20220526/2/20220526.gps
+                       E:/OneDrive/Studium/MA/data/20220526/2/20220526.glo
+                       E:/OneDrive/Studium/MA/data/20220526/2/20220526.gal
+*********************
+
+4-character ID          : 
+Receiver type           : TI4100
+Antenna type            : 
+
+Time of start of window : 1980 Jan  1  00:00:00.000
+Time of  end  of window : 1980 Jan  1  00:00:00.000
+Time line window length : 0.00 second(s), ticked every 0.1 second(s)
+Total satellites w/ obs : 0
+NAVSTAR GPS SVs w/o OBS :  1   2   3   4   5   6   7   8   9  10  11  12 
+                          13  14  15  16  17  18  19  20  21  22  23  24  25 
+                          26  27  28  29  30  31  32 
+NAVSTAR GPS SVs w/o NAV :
+    GLONASS SVs w/o OBS :  1   2   3   4   5   6   7   8   9  10  11  12 
+                          13  14  15  16  17  18  19  20  21  22  23  24 
+    GLONASS SVs w/o NAV :
+    Galileo SVs w/o OBS :  1   2   3   4   5   6   7   8   9  10  11  12 
+                          13  14  15  16  17  18  19  20  21  22  23  24  25 
+                          26  27  28  29  30  31  32  33  34  35  36  37  38 
+                          39  40  41  42  43  44  45  46  47  48  49  50  51 
+                          52  53 
+    Galileo SVs w/o NAV :
+Rx tracking capability  : 4 SVs
+Epochs w/ observations  :      0
+Epochs repeated         :      0  (0.00%)
+Complete observations   :      0
+ Deleted observations   :      0
+Obs w/ SV duplication   :      0  (within non-repeated epochs)
+Points in MP moving avg : 50
+No. of Rx clock offsets : 0
+Total Rx clock drift    :  0.000000 ms
+Rate of Rx clock drift  :  0.000 ms/hr
+Avg time between resets : Inf minute(s)
+Freq no. and timecode   : 0 0 000000
+Report gap > than       : 10.00 minute(s)
+epochs w/ msec clk slip : 0
+other msec mp events    : 0 (: 0)   {expect ~= 1:50}
+IOD signifying a slip   : >400.0 cm/minute
+IOD slips               :      0
+IOD or MP slips         :      0
+      first epoch    last epoch  
+SSN 80  1  1 00:00 80  1  1 00:00
+      first epoch    last epoch    hrs   dt  #expt  #have   %   mp1   mp2 o/slps
+SUM 80  1  1 00:00 80  1  1 00:00 .0000 .00     -       0  -     -     -       0
+
+
+
+Processing parameters are:
+Receiver tracking capability       : 4 SVs
+Maximum ionospheric rate (L1)      : 400.00 cm/min
+Report data gap greater than       : 10.00 min
+Multipath slip sigma threshold     : 4.00 sigma
+% increase in MP rms for C/A | A/S : 100.00 %
+Points in MP moving averages       : 50
+Elevation mask (cutoff)            : 10.00 degrees
+Elevation comparison threshold     : 25.00 degrees
+SVs w/ code data for position try  : 6
+Width of ASCII summary plot        : 72
+Data indicators on summary plot    : yes
+Do ionospheric observable          : yes
+Do ionospheric derivative          : yes
+Do multipath observables           : yes
+Do 1-ms receiver clock slips       : yes
+Tolerance for 1-ms clock slips     : 1.00e-002 ms
+Do receiver LLI slips              : yes
+Do plot file(s)                    : yes
+
+Observations start   : 1980 Jan  1 00:00:00.000
+Observations  end    : 1980 Jan  1 00:00:00.000
+Observation interval : 0.0000 second(s)
+
+ SV  #+hor <ele> #+mask <ele> #reprt #compl    L1     L2     P1     P2     C1     C2
+--- ------ ----- ------ ----- ------ ------ ------ ------ ------ ------ ------ ------
+Obs reported w/ code | phase  :      0
+Obs deleted (any reason)      :      0
+Obs complete                  :      0
+
+                                |
+
+
+
+No. of Rx clock offsets : 0
+Total Rx clock drift    :  0.000000 ms
+Rate of Rx clock drift  :  0.000000 ms/hr

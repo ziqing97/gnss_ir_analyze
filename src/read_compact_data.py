@@ -76,7 +76,7 @@ def generate_database(main_path):
         A dictionary which stores all ele, azi, sn1
         and sn2 data.
     """
-
+    main_path = main_path+'/'
     file_list = os.listdir(main_path)
     for item in file_list:
         file_ext = os.path.splitext(item)

@@ -74,8 +74,9 @@ def estimate_height(dataframe_in_interval, min_height, max_height):
     # lsp analysis
     x_data = (np.sin(elevation_sort.T*np.pi/180) * 4 * np.pi / WAVELENTH_S1).ravel()
     y_data = snr1_ref.ravel()
+    sample = np.arange(min_height,max_height,0.001)
     frequency, power = LombScargle(x_data,y_data).autopower()
-    plt.plot(frequency[(frequency < 4)],power[(frequency < 4)])
+    plt.plot(frequency[(frequency < 100)],power[(frequency < 100)])
 
     # locate the most possible value
     max_power_candidate_idx = (power > max(power)/2)

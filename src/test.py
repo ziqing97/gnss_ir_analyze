@@ -1,4 +1,5 @@
 from datetime import timedelta
+import os
 
 import numpy as np
 import pandas as pd
@@ -9,6 +10,7 @@ import data_filter as dafi
 import estimate_height as esth
 
 main_path = 'E:/OneDrive/Studium/MA/data/20220526/2/'
+main_path = os.path.abspath('../data/20220522/2/')
 
 data_dict = dafi.generate_dataframe(main_path)
 satellite_list = data_dict.keys()

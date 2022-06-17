@@ -1,0 +1,117 @@
+version: teqc  2019Feb25
+
+ SV+--------------------|-----------------------------|---------------------+ SV
+ 21|L+L______                                                               | 21
+ 31|LoooIooooooooooooo+++++LLL+_______                                      | 31
+  1|LoooIooooooooooooooooo++++++L______                                     |  1
+ 17|LoooooooooIooooooIoo-Iooooooo++++++++_______                            | 17
+ 19|LoooooooIoooooooooIooIIoooIoooIIoooIIIooIo+LLLL++L+_______              | 19
+  3|LooooooooooooooooooooooooooooooooooooooooooIoooooooooooooooooooooo+++++L|  3
+  4|LooooooooooooooooooooooooooooooooooooooooooIoooooooooooooooooooooooooooo|  4
+  6|LoooIoooooo-IoooooooooooooooooooooooooooooooooooooooooooooooooooooooIoIo|  6
+  9|LoooIooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo|  9
+ 11|  _______L++++++oooooooooooooooooooooooooooIoooooooooooooooooooooooooooo| 11
+  2|  ________L++++++ooooooooooooooooooooooooooIoooooooooooooooooooooooooooo|  2
+  7|          ______L++++++ooooooooooooooooooooIoooooooooooooooooooooooooooo|  7
+ 26|           _____________L+++L+L++L+L++L+LL+L+++++ooo+++++++++L+++++++++L| 26
+ 20|                             _______LLLL+++Ioooooooooooooooooooooooooooo| 20
+ 16|                                __________LLLL+L+++++II-I2oooooIIII--III| 16
+ 30|                                     _______L++++++ooooooooooooooooooooo| 30
+R 4|LI~~~II+L+L+++_______                                                   |R 4
+R20|L~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~++L++L+_____                          |R20
+R14|L~~I~~~~~~~~~~~~~~~~~~~~~~~~~~I~~~~~~~~~II++++++++__                    |R14
+R 5|L~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~++++++L|R 5
+R 6|-ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc|R 6
+R15|L~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~I~~IcI2I~~~~~~~~~~~~~~~~~|R15
+R21|L~~I~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-IIcII~I~III~~~~~~~~~~~~~~~~~~~-|R21
+R22|-----III~IcIIII~~I~IcccL~I-~~~~~~~~~~~~~~~~ILI~~~~II-II~~II~~~II~II2III-|R22
+R 7|    _______L++++++~~~~~~~~~~~~~~~~I~~~~~~~I~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|R 7
+R23|                                         _______L^^^^^^ccccccccccccccccc|R23
+R 9|                                                  _____L+++++I~~~~~~~~~~|R 9
+R 8|                                                                _____L++|R 8
+E21|____L^_______L^^^^^^^^^^^^L__L^^LL_L^^^^^L____L^________________        |E21
+E11|-cccccccccccccccccccccccccccccccccccccccccc------Lc-L^^L^_LL_______     |E11
+E 4|Lcccccccccccccccccccccccccccccccccccccccccc--ccccccccccccccccccccccccccc|E 4
+E 5|---ccccc--cccccccccc-c-cccccccccccccccccccccccccc--ccccccccccccccccccccc|E 5
+E 9|Lccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc|E 9
+E36|Lccccccccccccccccccccccccccccccccccccccccc-ccccccccccccc--cccccccccccccc|E36
+E34|-ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc|E34
+E 1|     ___________L^^^^^^^^L-ccccccc---cccccc---cccccccccccccccccccccccccc|E 1
+E31|                             ____________L^^L----ccccccccccccccccccccccc|E31
+E15|                                          _________L^L^^^^^^cccccccccccc|E15
+E24|                                                            ________L^^L|E24
+-dn|2111++  ++++ ++++++++++++++  +++++  ++++++++ +++ +++++++++++          ++|-dn
++dn|5322311 11 11 +++ +++++++ 1     + 111 ++  1931121 1 +++ 11+    111122111|+dn
++10|mmmmmmmmlllllllmnoonnnnnnnoooonnnnnmmmmmmmmllmmmnnooonooooo++++++++ooooo|+10
+Pos|oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo|Pos
+Clk|                                                                        |Clk
+   +--------------------|-----------------------------|---------------------+   
+19:19:44.000                                                        21:43:24.000
+2022 May 26                                                          2022 May 26
+
+*********************
+QC of RINEX  file(s) : E:/OneDrive/Studium/MA/data/20220526/3/20220526.obs
+input RnxNAV file(s) : E:/OneDrive/Studium/MA/data/20220526/3/20220526.gps
+                       E:/OneDrive/Studium/MA/data/20220526/3/20220526.glo
+                       E:/OneDrive/Studium/MA/data/20220526/3/20220526.gal
+*********************
+
+4-character ID          : 
+Receiver type           : LEICA GS15 (# = 1515869) (fw = 9.00/6.524)
+Antenna type            : LEIGS15         NONE
+
+Time of start of window : 2022 May 26  19:19:44.000
+Time of  end  of window : 2022 May 26  21:43:24.000
+Time line window length : 2.39 hour(s), ticked every 1.0 hour(s)
+ mean antenna; # of pos :    106
+  antenna WGS 84 (xyz)  : 4155265.9002 674047.9753 4776003.3257 (m)
+  antenna WGS 84 (geo)  : N  48 deg 47' 52.00"  E   9 deg 12' 50.39"
+  antenna WGS 84 (geo)  :   48.797777 deg     9.213997 deg
+          WGS 84 height : 303.6482 m
+|qc - header| position  :  21.4647 m
+qc position offsets     :  20.9256 m vertical   4.7806 m horizontal
+Observation interval    : 1.0000 seconds
+Total satellites w/ obs : 39
+NAVSTAR GPS SVs w/o OBS :  5   8  10  12  13  14  15  18  22  23  24  25 
+                          27  28  29  32 
+NAVSTAR GPS SVs w/o NAV :
+    GLONASS SVs w/o OBS :  1   2   3  10  11  12  13  16  17  18  19  24 
+    GLONASS SVs w/o NAV :
+    Galileo SVs w/o OBS :  2   3   6   7   8  10  12  13  14  16  17  18 
+                          19  20  22  23  25  26  27  28  29  30  32  33  35 
+                          37  38  39  40  41  42  43  44  45  46  47  48  49 
+                          50  51  52  53 
+    Galileo SVs w/o NAV :
+Rx tracking capability  : 32 SVs
+Poss. # of obs epochs   :   8621
+Epochs w/ observations  :   8621
+Epochs repeated         :      0  (0.00%)
+Possible obs >   0.0 deg: 249925
+Possible obs >  10.0 deg: 197294
+Complete obs >  10.0 deg: 122524
+ Deleted obs >  10.0 deg:  70667
+  Masked obs <  10.0 deg:   2131
+Obs w/ SV duplication   :      0  (within non-repeated epochs)
+Moving average MP12     : 0.263626 m
+Moving average MP21     : 0.224726 m
+Points in MP moving avg : 50
+Mean S1                 : 45.93 (sd=4.58 n=193187)
+Mean S2                 : 41.26 (sd=5.62 n=122708)
+No. of Rx clock offsets : 0
+Total Rx clock drift    :  0.000000 ms
+Rate of Rx clock drift  :  0.000 ms/hr
+Avg time between resets : Inf minute(s)
+Freq no. and timecode   : 2 15481 380000
+Report gap > than       : 10.00 minute(s)
+epochs w/ msec clk slip : 0
+other msec mp events    : 0 (: 320)   {expect ~= 1:50}
+IOD signifying a slip   : >400.0 cm/minute
+IOD slips <  10.0 deg*  :     67
+IOD slips >  10.0 deg   :    132
+IOD or MP slips <  10.0*:     68
+IOD or MP slips >  10.0 :    132
+ * or unknown elevation
+      first epoch    last epoch    sn1   sn2 
+SSN 22  5 26 19:19 22  5 26 21:43 45.93 41.26
+      first epoch    last epoch    hrs   dt  #expt  #have   %   mp1   mp2 o/slps
+SUM 22  5 26 19:19 22  5 26 21:43 2.395   1 197294 122524  62  0.26  0.22    928
