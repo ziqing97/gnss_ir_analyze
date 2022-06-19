@@ -26,7 +26,7 @@ def gnss_ir_gui():
             [sg.Submit(), sg.Cancel()]]
 
     # open a window
-    window = sg.Window('GNSS-R',layout)
+    window = sg.Window('GNSS-IR',layout)
     while True:
         event, value = window.read()
         if event is None or event == 'Cancel':

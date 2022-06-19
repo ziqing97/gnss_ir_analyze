@@ -74,22 +74,22 @@ def estimate_height(dataframe_in_interval, min_height, max_height):
     # lsp analysis
     x_data = (np.sin(elevation_sort.T*np.pi/180) * 4 * np.pi / WAVELENTH_S1).ravel()
     y_data = snr1_ref.ravel()
-    sample = np.arange(min_height,max_height,0.001)
-    frequency, power = LombScargle(x_data,y_data).autopower()
-    plt.plot(frequency[(frequency < 100)],power[(frequency < 100)])
+    try:
+        frequency, power = LombScargle(x_data,y_data).autopower()
+        plt.plot(frequency[(frequency < 5)],power[(frequency < 5)])
+        max_power_candidate_idx = (power > max(power)/2)
+        height_candidate = frequency[max_power_candidate_idx]
+        power_candidate = power[max_power_candidate_idx]
 
-    # locate the most possible value
-    max_power_candidate_idx = (power > max(power)/2)
-    height_candidate = frequency[max_power_candidate_idx]
-    power_candidate = power[max_power_candidate_idx]
+        valid_height_idx = (height_candidate < max_height) & (height_candidate > min_height)
+        height_candidate = height_candidate[valid_height_idx]
+        power_candidate = power_candidate[valid_height_idx]
 
-    valid_height_idx = (height_candidate < max_height) & (height_candidate > min_height)
-    height_candidate = height_candidate[valid_height_idx]
-    power_candidate = power_candidate[valid_height_idx]
-
-    if power_candidate.size != 0:
-        max_power_index = (power_candidate == max(power_candidate))
-        height = height_candidate[max_power_index]
-    else:
+        if power_candidate.size != 0:
+            max_power_index = (power_candidate == max(power_candidate))
+            height = height_candidate[max_power_index]
+        else:
+            height = float("nan")
+    except:
         height = float("nan")
     return height
