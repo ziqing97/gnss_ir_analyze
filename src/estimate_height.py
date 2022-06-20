@@ -7,11 +7,13 @@ Author: Ziqing Yu
 Last edited on 14/06/2022
 '''
 # pylint: disable=invalid-name
+# pylint: disable=bare-except
 
 from datetime import timedelta
 import numpy as np
 import matplotlib.pyplot as plt
-from astropy.timeseries import LombScargle
+# from astropy.timeseries import LombScargle
+from scipy import signal
 
 WAVELENTH_S1 = 0.1905 # meter
 
@@ -63,31 +65,41 @@ def estimate_height(dataframe_in_interval, min_height, max_height):
     dataframe_in_interval_sort = dataframe_in_interval.sort_values(by='elevation')
     # sort data by elevation
     elevation_sort = np.array([dataframe_in_interval_sort['elevation']])
+    snr = np.array([dataframe_in_interval_sort['snr1']])
+    non_nan_index = ~np.isnan(snr)
+
+    # nanfilter
+    elevation_filtered = elevation_sort[non_nan_index]
+    elevation_filtered = elevation_filtered.reshape(elevation_filtered.size,1)
+    snr_filtered = snr[non_nan_index]
+    snr_filtered = snr_filtered.reshape(snr_filtered.size,1)
 
     # calculate the snr_ref
-    design_matrix = np.concatenate((elevation_sort.T**2,elevation_sort.T,\
-                    np.ones((np.size(elevation_sort,1),1))),axis=1)
-    y = np.array([dataframe_in_interval_sort['snr1']]).T
-    y = np.exp(y/20) # dB to volt
-
-
-    x = np.dot(np.linalg.solve(np.dot(design_matrix.T,design_matrix),design_matrix.T),y)
-    snr1_ref = y - (elevation_sort.T**2 * x[0,0] + x[1,0]*elevation_sort.T + x[2,0])
-    #snr1_ref = np.log(snr1_ref) * 10 # volt to dB
-
-    # lsp analysis
-    x_data = (np.sin(elevation_sort.T*np.pi/180) * 4 * np.pi / WAVELENTH_S1).ravel()
-    y_data = snr1_ref.ravel()
+    design_matrix = np.concatenate((elevation_filtered**2,elevation_filtered,\
+                np.ones((elevation_filtered.size,1))),axis=1)
     try:
-        frequency, power = LombScargle(x_data,y_data).autopower()
-        plt.plot(frequency[(frequency < 100)],power[(frequency < 100)])
+        para = np.dot(np.linalg.solve(np.dot(design_matrix.T,design_matrix),\
+                    design_matrix.T),snr_filtered)
+    except:
+        height = float("nan")
+    else:
+        snr_ref = snr_filtered - (elevation_filtered**2 * para[0,0] + \
+                    para[1,0]*elevation_filtered + para[2,0])
+        #snr1_ref = np.log(snr1_ref) * 10 # volt to dB
+
+        # lsp analysis
+        x_data = (np.sin(elevation_sort.T*np.pi/180) * 4 * np.pi / WAVELENTH_S1).ravel()
+        y_data = snr_ref.ravel()
+        frequency = np.arange(min_height,max_height+1,0.001)
+        #frequency = np.arange(1,10,0.01)
+
+    try:
+        # frequency, power = LombScargle(x_data,y_data).autopower()
+        power = signal.lombscargle(x_data,y_data,frequency,normalize=True)
+        plt.plot(frequency,power)
         max_power_candidate_idx = (power > max(power)/2)
         height_candidate = frequency[max_power_candidate_idx]
         power_candidate = power[max_power_candidate_idx]
-
-        valid_height_idx = (height_candidate < max_height) & (height_candidate > min_height)
-        height_candidate = height_candidate[valid_height_idx]
-        power_candidate = power_candidate[valid_height_idx]
 
         if power_candidate.size != 0:
             max_power_index = (power_candidate == max(power_candidate))
