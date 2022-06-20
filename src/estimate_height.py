@@ -68,15 +68,19 @@ def estimate_height(dataframe_in_interval, min_height, max_height):
     design_matrix = np.concatenate((elevation_sort.T**2,elevation_sort.T,\
                     np.ones((np.size(elevation_sort,1),1))),axis=1)
     y = np.array([dataframe_in_interval_sort['snr1']]).T
+    y = np.exp(y/20) # dB to volt
+
+
     x = np.dot(np.linalg.solve(np.dot(design_matrix.T,design_matrix),design_matrix.T),y)
     snr1_ref = y - (elevation_sort.T**2 * x[0,0] + x[1,0]*elevation_sort.T + x[2,0])
+    #snr1_ref = np.log(snr1_ref) * 10 # volt to dB
 
     # lsp analysis
     x_data = (np.sin(elevation_sort.T*np.pi/180) * 4 * np.pi / WAVELENTH_S1).ravel()
     y_data = snr1_ref.ravel()
     try:
         frequency, power = LombScargle(x_data,y_data).autopower()
-        plt.plot(frequency[(frequency < 5)],power[(frequency < 5)])
+        plt.plot(frequency[(frequency < 100)],power[(frequency < 100)])
         max_power_candidate_idx = (power > max(power)/2)
         height_candidate = frequency[max_power_candidate_idx]
         power_candidate = power[max_power_candidate_idx]
