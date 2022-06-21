@@ -15,12 +15,12 @@ def gnss_ir_gui():
     # gui layout for generate rinex and compact
     layout = [[sg.Input("E:/OneDrive/Studium/MA/data/20220526/2/5856_0526_213047.m00",\
                 key='raw_data'),sg.FileBrowse('raw_data',key='raw_data')],
-            [sg.Text('Please give a roughly beginning measuring time')],
+            [sg.Text('Please give a rough measuring time')],
             [sg.Text('year'),sg.InputText('2022',key='year', size=(4,1)),sg.Text('month'),\
                 sg.InputText('05',key='month', size=(2,1)),\
                 sg.Text('day'),sg.InputText('26',key='day', size=(2,1))],
             [sg.Text('from'),sg.InputText('19',key='hour1', size=(2,1)),sg.Text('o\'clock'),\
-                sg.Text('from'),sg.InputText('22',key='hour2', size=(2,1)),sg.Text('o\'clock')],
+                sg.Text('to'),sg.InputText('22',key='hour2', size=(2,1)),sg.Text('o\'clock')],
             [sg.Text('Please give the receiver type argument'),\
                 sg.InputText('-leica mdb',key='receiver_type')],
             [sg.Submit(), sg.Cancel()]]
