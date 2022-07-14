@@ -15,6 +15,8 @@ import matplotlib.pyplot as plt
 # from astropy.timeseries import LombScargle
 from scipy import signal
 
+from data_filter import elevation_filter
+
 WAVELENTH_S1 = 0.1905 # meter
 
 def split_result(dataframe,time_interval,min_height,max_height):
@@ -85,27 +87,22 @@ def estimate_height(dataframe_in_interval, min_height, max_height):
     else:
         snr_ref = snr_filtered - (elevation_filtered**2 * para[0,0] + \
                     para[1,0]*elevation_filtered + para[2,0])
-        #snr1_ref = np.log(snr1_ref) * 10 # volt to dB
 
         # lsp analysis
-        x_data = (np.sin(elevation_sort.T*np.pi/180) * 4 * np.pi / WAVELENTH_S1).ravel()
+        x_data = (np.sin(elevation_filtered.T*np.pi/180) * 4 * np.pi / WAVELENTH_S1).ravel()
         y_data = snr_ref.ravel()
         frequency = np.arange(min_height,max_height+1,0.001)
-        #frequency = np.arange(1,10,0.01)
 
-    try:
-        # frequency, power = LombScargle(x_data,y_data).autopower()
         power = signal.lombscargle(x_data,y_data,frequency,normalize=True)
         plt.plot(frequency,power)
-        max_power_candidate_idx = (power > max(power)/2)
-        height_candidate = frequency[max_power_candidate_idx]
-        power_candidate = power[max_power_candidate_idx]
 
-        if power_candidate.size != 0:
-            max_power_index = (power_candidate == max(power_candidate))
-            height = height_candidate[max_power_index]
+        peaks,_= signal.find_peaks(power)
+        if peaks.size != 0:
+            peaks_power = power[peaks]
+
+            height_peak = frequency[peaks]
+            height_peak = height_peak[peaks_power==max(peaks_power)]
+            height = height_peak
         else:
             height = float("nan")
-    except:
-        height = float("nan")
     return height
