@@ -102,7 +102,7 @@ def estimate_height(dataframe_in_interval, min_height, max_height):
 
             height_peak = frequency[peaks]
             height_peak = height_peak[peaks_power==max(peaks_power)]
-            height = height_peak
+            height = height_peak[0]
         else:
             height = float("nan")
     return height
