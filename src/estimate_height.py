@@ -6,8 +6,7 @@ scargle algorithm
 Author: Ziqing Yu
 Last edited on 14/06/2022
 '''
-# pylint: disable=invalid-name
-# pylint: disable=bare-except
+# pylint: disable=invalid-name, bare-except
 
 from datetime import timedelta
 import numpy as np
@@ -32,16 +31,25 @@ def split_result(dataframe,time_interval,min_height,max_height):
         height_list: the estimated height
         azimut_list: the average azimut
     '''
-    time_delta = timedelta(minutes=time_interval)
-
     time_start = dataframe['time'].iat[0]
+    
+    if time_interval>0:
+        time_delta = timedelta(minutes=time_interval)
+        time_end = time_start + time_delta
+    elif time_interval==0:
+        time_end=dataframe['time'].iat[-1]
+        time_delta=time_end-time_start
+    else:
+        raise ValueError("time_delta cannot be negativ!")
+
+    
     time_end = time_start + time_delta
     height_list = []
     time_list = []
     azimut_list = []
-    while time_end < dataframe['time'].iat[-1]:
+    while time_end <= dataframe['time'].iat[-1]:
         dataframe_in_interval = dataframe[(dataframe['time'] >= time_start) & \
-                                        (dataframe['time'] < time_end)]
+                                        (dataframe['time'] <= time_end)]
         if not dataframe_in_interval.empty:
             height = estimate_height(dataframe_in_interval,min_height,max_height)
             height_list.append(height)
