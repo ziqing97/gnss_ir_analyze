@@ -1,0 +1,111 @@
+version: teqc  2019Feb25
+
+ SV+---------|----------------------------|----------------------------|----+ SV
+ 20|LLLLL_____________                                                      | 20
+ 25|-I--MI-MooIIILLL__________                                              | 25
+ 31|LooooooooooooooooooooooooooooI---_____________                          | 31
+  5|Loooooooooooooooooooooooooooooooooo-o++L+L__L________                   |  5
+ 29|LooooooooooooooooooooooooIoooooo-IooooooooooIo--MM++LL__________        | 29
+ 26|Looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo| 26
+ 16|LoooooooIooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo| 16
+ 18|Looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo| 18
+ 23|_____LLI---MIIIIII-IIIIIIIIIIIIoooo-MoooIIIIooooooIoo-2ooooooooooooooooo| 23
+ 27|___------------------IIIIIIIIIIIIIoo----IIIooooooooooooooooooooooooooooo| 27
+ 10|                _____________--oo-Ioooooooooooo-IIooooooIooooooooIIooooo| 10
+  7|                                  __________________LLLLL+++ooooIoIIooII|  7
+  8|                                    ______________-----------III-IIIIooo|  8
+ 15|                                      ___________________L__L___M-IoIooo| 15
+R12|L~~~~~~~~~~~~~~~~~~~~I-----__________                                   |R12
+R13|L~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~I----                  |R13
+R14|L~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~I~~-I~~~2~~~~~~~~~-I~|R14
+R23|Lccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc|R23
+R24|LIIMIMI~I~cc--M---IMIII-I-M~-I~IIIIM1~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|R24
+R 7|         ____----~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|R 7
+R15|                       _________--I-MI~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|R15
+R 8|                       _________------cMI--I~~~~~~~~~~~~~~~~~~~~~~~~~~~~|R 8
+R17|                                                    -III~~-Ic--M--IIII~~|R17
+R 1|                                                    ____----------IIMI--|R 1
+E 1|-cc---c-----------cc------_______________                               |E 1
+E26|Lcccccccccccccccccccccccc-ccccccc-ccc--L________________                |E26
+E24|Lcccccccccccc--ccccccccccccccccccccccccccccccccccccccccccccccccccccccccc|E24
+E31|Lcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc---|E31
+E33|Lccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc|E33
+E12|Lccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc|E12
+E25|              ________________----cccc-cccccccccccccccccccccccccccccc---|E25
+E 7|                       _________________L_____L^^L__LLLLL_LL_________LL_|E 7
+-dn|  +11  1333312333221111222    11122231+++ 1   + +  2     1212211222  +21|-dn
++dn|122334233344465443333444454123424734532123221  1112322323232233345522333|+dn
++10|iiijjjjkkkkkkkkkkkkkkkkkkkjiijkkllllllkjjjjjjjjjjjjjkkjjkkklllllmmmmmmmm|+10
+Pos| ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo|Pos
+Clk|                                                                        |Clk
+   +---------|----------------------------|----------------------------|----+   
+08:40:16.000                                                        11:09:49.000
+2022 Jun 18                                                          2022 Jun 18
+
+*********************
+QC of RINEX  file(s) : E:/OneDrive/Studium/MA/data/20220618/3/20220618.obs
+input RnxNAV file(s) : E:/OneDrive/Studium/MA/data/20220618/3/20220618.gps
+                       E:/OneDrive/Studium/MA/data/20220618/3/20220618.glo
+                       E:/OneDrive/Studium/MA/data/20220618/3/20220618.gal
+*********************
+
+4-character ID          : 
+Receiver type           : LEICA GS15 (# = 1515869) (fw = 9.00/6.524)
+Antenna type            : LEIGS15         NONE
+
+Time of start of window : 2022 Jun 18  08:40:16.000
+Time of  end  of window : 2022 Jun 18  11:09:49.000
+Time line window length : 2.49 hour(s), ticked every 1.0 hour(s)
+ mean antenna; # of pos :    110
+  antenna WGS 84 (xyz)  : 4159748.6311 682968.5662 4770867.4932 (m)
+  antenna WGS 84 (geo)  : N  48 deg 43' 39.73"  E   9 deg 19' 26.13"
+  antenna WGS 84 (geo)  :   48.727704 deg     9.323924 deg
+          WGS 84 height : 305.0411 m
+|qc - header| position  :  11.8938 m
+qc position offsets     :  11.7801 m vertical   1.6410 m horizontal
+Observation interval    : 1.0000 seconds
+Total satellites w/ obs : 32
+NAVSTAR GPS SVs w/o OBS :  1   2   3   4   6   9  11  12  13  14  17  19 
+                          21  22  24  28  30  32 
+NAVSTAR GPS SVs w/o NAV :
+    GLONASS SVs w/o OBS :  2   3   4   5   6   9  10  11  16  18  19  20 
+                          21  22 
+    GLONASS SVs w/o NAV :
+    Galileo SVs w/o OBS :  2   3   4   5   6   8   9  10  11  13  14  15 
+                          16  17  18  19  20  21  22  23  27  28  29  30  32 
+                          34  35  36  37  38  39  40  41  42  43  44  45  46 
+                          47  48  49  50  51  52  53 
+    Galileo SVs w/o NAV :
+Rx tracking capability  : 32 SVs
+Poss. # of obs epochs   :   8974
+Epochs w/ observations  :   8974
+Epochs repeated         :      0  (0.00%)
+Possible obs >   0.0 deg: 214470
+Possible obs >  10.0 deg: 178216
+Complete obs >  10.0 deg: 100410
+ Deleted obs >  10.0 deg:  58377
+  Masked obs <  10.0 deg:  18014
+Obs w/ SV duplication   :      0  (within non-repeated epochs)
+Moving average MP12     : 0.185976 m
+Moving average MP21     : 0.228163 m
+Points in MP moving avg : 50
+Mean S1                 : 45.20 (sd=5.03 n=158787)
+Mean S2                 : 40.13 (sd=5.59 n=100498)
+No. of Rx clock offsets : 0
+Total Rx clock drift    :  0.000000 ms
+Rate of Rx clock drift  :  0.000 ms/hr
+Avg time between resets : Inf minute(s)
+Freq no. and timecode   : 2 15504 000f00
+Report gap > than       : 10.00 minute(s)
+epochs w/ msec clk slip : 0
+other msec mp events    : 0 (: 620)   {expect ~= 1:50}
+IOD signifying a slip   : >400.0 cm/minute
+IOD slips <  10.0 deg*  :     61
+IOD slips >  10.0 deg   :    328
+IOD or MP slips <  10.0*:     62
+IOD or MP slips >  10.0 :    349
+ * or unknown elevation
+      first epoch    last epoch    sn1   sn2 
+SSN 22  6 18 08:40 22  6 18 11:09 45.20 40.13
+      first epoch    last epoch    hrs   dt  #expt  #have   %   mp1   mp2 o/slps
+SUM 22  6 18 08:40 22  6 18 11:09 2.493   1 178216 100410  56  0.19  0.23    288

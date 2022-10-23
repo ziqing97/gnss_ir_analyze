@@ -10,11 +10,8 @@ Last edited on 14/06/2022
 
 from datetime import timedelta
 import numpy as np
-import matplotlib.pyplot as plt
 # from astropy.timeseries import LombScargle
 from scipy import signal
-
-from data_filter import elevation_filter
 
 WAVELENTH_S1 = 0.1905 # meter
 
@@ -32,7 +29,7 @@ def split_result(dataframe,time_interval,min_height,max_height):
         azimut_list: the average azimut
     '''
     time_start = dataframe['time'].iat[0]
-    
+
     if time_interval>0:
         time_delta = timedelta(minutes=time_interval)
         time_end = time_start + time_delta
@@ -42,22 +39,25 @@ def split_result(dataframe,time_interval,min_height,max_height):
     else:
         raise ValueError("time_delta cannot be negativ!")
 
-    
     time_end = time_start + time_delta
     height_list = []
     time_list = []
     azimut_list = []
+    frequency_list =[]
+    power_list = []
     while time_end <= dataframe['time'].iat[-1]:
         dataframe_in_interval = dataframe[(dataframe['time'] >= time_start) & \
                                         (dataframe['time'] <= time_end)]
         if not dataframe_in_interval.empty:
-            height = estimate_height(dataframe_in_interval,min_height,max_height)
+            frequency,power,height = estimate_height(dataframe_in_interval,min_height,max_height)
+            frequency_list.append(frequency)
+            power_list.append(power)
             height_list.append(height)
             time_list.append(time_start + time_delta/2)
             azimut_list.append(np.average(dataframe_in_interval['azimut']))
         time_start = time_end
         time_end = time_end = time_start + time_delta
-    return (time_list, height_list, azimut_list)
+    return (time_list, height_list, azimut_list,frequency_list,power_list)
 
 
 
@@ -92,6 +92,8 @@ def estimate_height(dataframe_in_interval, min_height, max_height):
                     design_matrix.T),snr_filtered)
     except:
         height = float("nan")
+        frequency = float("nan")
+        power = float("nan")
     else:
         snr_ref = snr_filtered - (elevation_filtered**2 * para[0,0] + \
                     para[1,0]*elevation_filtered + para[2,0])
@@ -102,8 +104,6 @@ def estimate_height(dataframe_in_interval, min_height, max_height):
         frequency = np.arange(min_height,max_height+1,0.001)
 
         power = signal.lombscargle(x_data,y_data,frequency,normalize=True)
-        plt.plot(frequency,power)
-
         peaks,_= signal.find_peaks(power)
         if peaks.size != 0:
             peaks_power = power[peaks]
@@ -113,4 +113,4 @@ def estimate_height(dataframe_in_interval, min_height, max_height):
             height = height_peak[0]
         else:
             height = float("nan")
-    return height
+    return frequency,power,height

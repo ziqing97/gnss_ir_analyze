@@ -1,0 +1,118 @@
+version: teqc  2019Feb25
+
+ SV+-------------------|-------------------------|-------------------------|+ SV
+  7|LLL______________                                                       |  7
+ 18|-ooo++++L________                                                       | 18
+ 26|LooII____________                                                       | 26
+ 15|L__________________                                                     | 15
+ 16|Looooooooooooooooooooooooooo+L__________                                | 16
+ 23|LoooooooooooooooooooooooooooooooooI-II-IoILLLLL_______                  | 23
+ 21|Looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo| 21
+ 10|Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo-Iooooo| 10
+  8|Looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo|  8
+ 27|Looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo| 27
+ 32|__LL+++++ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo| 32
+  1| ____________---------oooooooooooooooooooooooooooooooooooooooooooooooooo|  1
+ 22|             ________L++++oooooooooooooooooooooooooooooooooooooooooooooo| 22
+ 14|               _______L+++++++oooooooooooooooooooooooooooooooooooooooooo| 14
+  3|                                ___________----IIIM-Iooooooooooooooooooo|  3
+ 17|                                                     ______L++++++oooooo| 17
+R12|L~~II---                                                                |R12
+R21|L~~~~~~~++++++L______                                                   |R21
+R13|L~~~~~~~~~~~~~~~~~~~~I----------__                                      |R13
+R 6|Lcccccccccccc---------------______                                      |R 6
+R14|L~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~------_____            |R14
+R 7|L~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~II~~-M~~~+++|R 7
+R 8|L~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|R 8
+R23|Lccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc|R23
+R24|      ____---~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|R24
+R15|                   ______L++++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+|R15
+R 1|                    _________--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|R 1
+R17|                                                   _____LL+++++~~~~~~~~~|R17
+R 2|                                                              _________L|R 2
+E 1|Lcccccccccccccccccc^^L___________                                       |E 1
+E 8|--------------_____________________                                     |E 8
+E31|Lcccccccccccccccccccccccccccccccccccccccccccccc-----------_____________ |E31
+E 7|Lccccccccccccccccccccccccccccccccccccccccccccccccccccccc-ccc---------c--|E 7
+E24|Lcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc---|E24
+E12|--cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc|E12
+E26|LccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccL^^^^|E26
+E33|Lccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc|E33
+E19|                  ______________-------ccccccccccccccccccccccccccccccccc|E19
+E25|                       ____________L^^^^^^^ccccccccccccccccccccccccccccc|E25
+E11|                                                  ________________---ccc|E11
+-dn|2+++  1   1211212221 1122121111  11    ++++     11222211 +   1111111++ 1|-dn
++dn|3213322111222222222212222222122111211 1 +  11112233332212   221122221 11|+dn
++10|ooooommmllmmmmmmmmmmlllllmmmlnnnnnnnnnnnnnnoooooooooooonnmmmmmnnno++oono|+10
+Pos| ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo|Pos
+Clk|                                                                        |Clk
+   +-------------------|-------------------------|-------------------------|+   
+08:15:13.000                                                        11:01:05.000
+2022 Aug 11                                                          2022 Aug 11
+
+*********************
+QC of RINEX  file(s) : E:/OneDrive/Studium/MA/data/20220811/3/20220811.obs
+input RnxNAV file(s) : E:/OneDrive/Studium/MA/data/20220811/3/20220811.gps
+                       E:/OneDrive/Studium/MA/data/20220811/3/20220811.glo
+                       E:/OneDrive/Studium/MA/data/20220811/3/20220811.gal
+*********************
+
+4-character ID          : 
+Receiver type           : LEICA GS15 (# = 1515869) (fw = 9.00/6.524)
+Antenna type            : LEIGS15         NONE
+
+Time of start of window : 2022 Aug 11  08:15:13.000
+Time of  end  of window : 2022 Aug 11  11:01:05.000
+Time line window length : 2.76 hour(s), ticked every 1.0 hour(s)
+ mean antenna; # of pos :     87
+  antenna WGS 84 (xyz)  : 4159743.0036 682602.2312 4770930.5562 (m)
+  antenna WGS 84 (geo)  : N  48 deg 43' 42.66"  E   9 deg 19'  8.48"
+  antenna WGS 84 (geo)  :   48.728517 deg     9.319023 deg
+          WGS 84 height : 309.6350 m
+|qc - header| position  :  22.5357 m
+qc position offsets     :  22.2967 m vertical   3.2733 m horizontal
+Observation interval    : 1.0000 seconds
+Total satellites w/ obs : 40
+NAVSTAR GPS SVs w/o OBS :  2   4   5   6   9  11  12  13  19  20  24  25 
+                          28  29  30  31 
+NAVSTAR GPS SVs w/o NAV :
+    GLONASS SVs w/o OBS :  3   4   5   9  10  11  16  18  19  20  22 
+    GLONASS SVs w/o NAV :
+    Galileo SVs w/o OBS :  2   3   4   5   6   9  10  13  14  15  16  17 
+                          18  20  21  22  23  27  28  29  30  32  34  35  36 
+                          37  38  39  40  41  42  43  44  45  46  47  48  49 
+                          50  51  52  53 
+    Galileo SVs w/o NAV :
+Rx tracking capability  : 32 SVs
+Poss. # of obs epochs   :   9953
+Epochs w/ observations  :   9953
+Epochs repeated         :      0  (0.00%)
+Possible obs >   0.0 deg: 270136
+Possible obs >  10.0 deg: 225842
+Complete obs >  10.0 deg: 134384
+ Deleted obs >  10.0 deg:  78252
+  Masked obs <  10.0 deg:  11368
+Obs w/ SV duplication   :      0  (within non-repeated epochs)
+Moving average MP12     : 0.033856 m
+Moving average MP21     : 0.046986 m
+Points in MP moving avg : 50
+Mean S1                 : 47.17 (sd=3.85 n=212636)
+Mean S2                 : 42.46 (sd=5.62 n=134401)
+No. of Rx clock offsets : 0
+Total Rx clock drift    :  0.000000 ms
+Rate of Rx clock drift  :  0.000 ms/hr
+Avg time between resets : Inf minute(s)
+Freq no. and timecode   : 2 15558 000f00
+Report gap > than       : 10.00 minute(s)
+epochs w/ msec clk slip : 0
+other msec mp events    : 0 (: 129)   {expect ~= 1:50}
+IOD signifying a slip   : >400.0 cm/minute
+IOD slips <  10.0 deg*  :     50
+IOD slips >  10.0 deg   :     33
+IOD or MP slips <  10.0*:     51
+IOD or MP slips >  10.0 :     35
+ * or unknown elevation
+      first epoch    last epoch    sn1   sn2 
+SSN 22  8 11 08:15 22  8 11 11:01 47.17 42.46
+      first epoch    last epoch    hrs   dt  #expt  #have   %   mp1   mp2 o/slps
+SUM 22  8 11 08:15 22  8 11 11:01 2.765   1 225842 134384  60  0.03  0.05   3840
