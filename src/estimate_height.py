@@ -50,6 +50,7 @@ def split_result(dataframe,wavelength,time_interval,min_height,max_height):
     height_list = []
     time_list = []
     azimut_list = []
+    elevation_list = []
     frequency_list =[]
     power_list = []
     while time_end <= dataframe['time'].iat[-1]:
@@ -57,14 +58,16 @@ def split_result(dataframe,wavelength,time_interval,min_height,max_height):
                                         (dataframe['time'] <= time_end)]
         if not dataframe_in_interval.empty:
             frequency,power,height = estimate_height(dataframe_in_interval,wavelength,min_height,max_height)
-            frequency_list.append(frequency)
-            power_list.append(power)
-            height_list.append(height)
-            time_list.append(time_start + time_delta/2)
-            azimut_list.append(np.average(dataframe_in_interval['azimut']))
+            for h in height:
+                frequency_list.append(frequency)
+                power_list.append(power)
+                height_list.append(h)
+                time_list.append(time_start + time_delta/2)
+                azimut_list.append(np.average(dataframe_in_interval['azimut']))
+                elevation_list.append(np.average(dataframe_in_interval['elevation']))
         time_start = time_end
         time_end = time_end = time_start + time_delta
-    return (time_list, height_list, azimut_list,frequency_list,power_list)
+    return (time_list, height_list, azimut_list, elevation_list, frequency_list,power_list)
 
 
 
@@ -78,7 +81,7 @@ def estimate_height(dataframe_in_interval, wavelength, min_height, max_height):
     Returns:
         height: the estimated height during the given time
     '''
-
+    threshold = 2/3
     dataframe_in_interval_sort = dataframe_in_interval.sort_values(by='elevation')
     # sort data by elevation
     elevation_sort = np.array([dataframe_in_interval_sort['elevation']])
@@ -98,7 +101,7 @@ def estimate_height(dataframe_in_interval, wavelength, min_height, max_height):
         para = np.dot(np.linalg.solve(np.dot(design_matrix.T,design_matrix),\
                     design_matrix.T),snr_filtered)
     except:
-        height = float("nan")
+        height = []
         frequency = float("nan")
         power = float("nan")
     else:
@@ -116,13 +119,13 @@ def estimate_height(dataframe_in_interval, wavelength, min_height, max_height):
             peaks_power = power[peaks]
 
             height_peak = frequency[peaks]
-            height_peak = height_peak[peaks_power==max(peaks_power)]
-            height = height_peak[0]
+            height = height_peak[peaks_power>max(peaks_power)*threshold]
         else:
-            height = float("nan")
+            height = []
     return frequency,power,height
 
-def estimate_all_satellite(data_dict:pd.DataFrame,azimut_mask:list,elevation_mask:list,min_height:float,max_height:float,time_length:float):
+def estimate_all_satellite(main_path:str,azimut_mask:list,elevation_mask:list,min_height:float,max_height:float,time_length:float):
+    data_dict = dafi.generate_dataframe(main_path)
     satellite_list = data_dict.keys()
     for satellite_code in satellite_list:
         data_dict[satellite_code] = dafi.azimut_filter(data_dict[satellite_code],azimut_mask)
@@ -130,6 +133,7 @@ def estimate_all_satellite(data_dict:pd.DataFrame,azimut_mask:list,elevation_mas
     time_dict = {}
     height_dict = {}
     azimut_dict = {}
+    elevation_dict ={}
     frequency_dict = {}
     power_dict = {}
     for satellite_code in satellite_list:
@@ -137,11 +141,12 @@ def estimate_all_satellite(data_dict:pd.DataFrame,azimut_mask:list,elevation_mas
         try:
             if satellite_code[0]=='R':
                 time_dict[satellite_code], height_dict[satellite_code], azimut_dict[satellite_code],\
-                frequency_dict[satellite_code],power_dict[satellite_code] =\
-                split_result(dataframe,WAVELENTH_GLONASS_S1,time_length,min_height=1,max_height=4)
+                elevation_dict[satellite_code], frequency_dict[satellite_code],power_dict[satellite_code] =\
+                split_result(dataframe,WAVELENTH_GLONASS_S1,time_length,min_height=min_height,max_height=max_height)
             else:
                 time_dict[satellite_code], height_dict[satellite_code], azimut_dict[satellite_code],\
-                frequency_dict[satellite_code],power_dict[satellite_code] =\
-                split_result(dataframe,WAVELENTH_GPS_S1,time_length,min_height=1,max_height=4)
+                elevation_dict[satellite_code], frequency_dict[satellite_code],power_dict[satellite_code] =\
+                split_result(dataframe,WAVELENTH_GPS_S1,time_length,min_height=min_height,max_height=max_height)
         except IndexError:
             continue
+    return time_dict,height_dict,azimut_dict,elevation_dict,frequency_dict,power_dict
