@@ -10,12 +10,19 @@ Last edited on 14/06/2022
 
 from datetime import timedelta
 import numpy as np
+import pandas as pd
 # from astropy.timeseries import LombScargle
 from scipy import signal
+import data_filter as dafi
 
-WAVELENTH_S1 = 0.1905 # meter
+C = 299792458 # m/s
+FREQUENCY_GPS_L1 = 1575.42 * 10**6
+WAVELENTH_GPS_S1 = C/FREQUENCY_GPS_L1
 
-def split_result(dataframe,time_interval,min_height,max_height):
+FREQUENCY_GLONASS_L1 = 1602 * 10**6
+WAVELENTH_GLONASS_S1 = C/FREQUENCY_GLONASS_L1
+
+def split_result(dataframe,wavelength,time_interval,min_height,max_height):
     '''
     this function does the GNSS-IR analysis for one satellite.
     Args:
@@ -49,7 +56,7 @@ def split_result(dataframe,time_interval,min_height,max_height):
         dataframe_in_interval = dataframe[(dataframe['time'] >= time_start) & \
                                         (dataframe['time'] <= time_end)]
         if not dataframe_in_interval.empty:
-            frequency,power,height = estimate_height(dataframe_in_interval,min_height,max_height)
+            frequency,power,height = estimate_height(dataframe_in_interval,wavelength,min_height,max_height)
             frequency_list.append(frequency)
             power_list.append(power)
             height_list.append(height)
@@ -61,7 +68,7 @@ def split_result(dataframe,time_interval,min_height,max_height):
 
 
 
-def estimate_height(dataframe_in_interval, min_height, max_height):
+def estimate_height(dataframe_in_interval, wavelength, min_height, max_height):
     '''
     This function uses LSP to estimate the height:
     Args:
@@ -99,7 +106,7 @@ def estimate_height(dataframe_in_interval, min_height, max_height):
                     para[1,0]*elevation_filtered + para[2,0])
 
         # lsp analysis
-        x_data = (np.sin(elevation_filtered.T*np.pi/180) * 4 * np.pi / WAVELENTH_S1).ravel()
+        x_data = (np.sin(elevation_filtered.T*np.pi/180) * 4 * np.pi / wavelength).ravel()
         y_data = snr_ref.ravel()
         frequency = np.arange(min_height,max_height+1,0.001)
 
@@ -114,3 +121,27 @@ def estimate_height(dataframe_in_interval, min_height, max_height):
         else:
             height = float("nan")
     return frequency,power,height
+
+def estimate_all_satellite(data_dict:pd.DataFrame,azimut_mask:list,elevation_mask:list,min_height:float,max_height:float,time_length:float):
+    satellite_list = data_dict.keys()
+    for satellite_code in satellite_list:
+        data_dict[satellite_code] = dafi.azimut_filter(data_dict[satellite_code],azimut_mask)
+        data_dict[satellite_code] = dafi.elevation_filter(data_dict[satellite_code],elevation_mask)
+    time_dict = {}
+    height_dict = {}
+    azimut_dict = {}
+    frequency_dict = {}
+    power_dict = {}
+    for satellite_code in satellite_list:
+        dataframe = data_dict[satellite_code]
+        try:
+            if satellite_code[0]=='R':
+                time_dict[satellite_code], height_dict[satellite_code], azimut_dict[satellite_code],\
+                frequency_dict[satellite_code],power_dict[satellite_code] =\
+                split_result(dataframe,WAVELENTH_GLONASS_S1,time_length,min_height=1,max_height=4)
+            else:
+                time_dict[satellite_code], height_dict[satellite_code], azimut_dict[satellite_code],\
+                frequency_dict[satellite_code],power_dict[satellite_code] =\
+                split_result(dataframe,WAVELENTH_GPS_S1,time_length,min_height=1,max_height=4)
+        except IndexError:
+            continue
