@@ -9,16 +9,18 @@ Last edited on 14/06/2022
 # pylint: disable=invalid-name, bare-except
 
 import os
-import random
 from datetime import timedelta
+from csv import reader
+
 import numpy as np
 import pandas as pd
 # from astropy.timeseries import LombScargle
 from scipy import signal
-import data_filter as dafi
 
 from pymap3d import enu2geodetic
 import gmplot
+
+import data_filter as dafi
 
 C = 299792458 # m/s
 FREQUENCY_GPS_L1 = 1575.42 * 10**6
@@ -28,6 +30,20 @@ FREQUENCY_GLONASS_L1 = 1602 * 10**6
 WAVELENTH_GLONASS_S1 = C/FREQUENCY_GLONASS_L1
 
 GOOGLE_APIKEY="AIzaSyBe1VW572pITHH7OBLt1Ziy1e9y0dl4kWw"
+def get_satellite_color() -> dict:
+    """
+    read satellite color from the file
+    Returns:
+        dict: a dict with satellite code as key and color as value
+    """
+    color_file = os.path.abspath('../data/color/gnss_color.csv')
+    color_dict = {}
+    with open(color_file, 'r', encoding='utf8') as read_obj:
+        csv_reader = reader(read_obj)
+        for row in csv_reader:
+            color_dict[row[0]]=row[1]
+    del color_dict['']
+    return color_dict
 
 def split_result(dataframe,wavelength,time_interval,min_height,max_height):
     '''
@@ -64,7 +80,8 @@ def split_result(dataframe,wavelength,time_interval,min_height,max_height):
         dataframe_in_interval = dataframe[(dataframe['time'] >= time_start) & \
                                         (dataframe['time'] <= time_end)]
         if not dataframe_in_interval.empty:
-            frequency,power,height = estimate_height(dataframe_in_interval,wavelength,min_height,max_height)
+            frequency,power,height =\
+                estimate_height(dataframe_in_interval,wavelength,min_height,max_height)
             for h in height:
                 frequency_list.append(frequency)
                 power_list.append(power)
@@ -76,7 +93,7 @@ def split_result(dataframe,wavelength,time_interval,min_height,max_height):
         time_end = time_end = time_start + time_delta
     return (time_list, height_list, azimut_list, elevation_list, frequency_list,power_list)
 
-def estimate_height(dataframe_in_interval, wavelength, min_height, max_height):
+def estimate_height(dataframe_in_interval:pd.DataFrame, wavelength, min_height, max_height):
     '''
     This function uses LSP to estimate the height:
     Args:
@@ -129,7 +146,21 @@ def estimate_height(dataframe_in_interval, wavelength, min_height, max_height):
             height = []
     return frequency,power,height
 
-def estimate_all_satellite(main_path:str,azimut_mask:list,elevation_mask:list,min_height:float,max_height:float,time_length:float):
+def estimate_all_satellite(main_path:str,azimut_mask:list,elevation_mask:list,\
+    min_height:float,max_height:float,time_length:float):
+    """
+    Esmite all satellite results
+    Args:
+        main_path (str): _description_
+        azimut_mask (list): _description_
+        elevation_mask (list): _description_
+        min_height (float): _description_
+        max_height (float): _description_
+        time_length (float): _description_
+
+    Returns:
+        _type_: _description_
+    """
     data_dict = dafi.generate_dataframe(main_path)
     satellite_list = data_dict.keys()
     for satellite_code in satellite_list:
@@ -145,18 +176,25 @@ def estimate_all_satellite(main_path:str,azimut_mask:list,elevation_mask:list,mi
         dataframe = data_dict[satellite_code]
         try:
             if satellite_code[0]=='R':
-                time_dict[satellite_code], height_dict[satellite_code], azimut_dict[satellite_code],\
-                elevation_dict[satellite_code], frequency_dict[satellite_code],power_dict[satellite_code] =\
-                split_result(dataframe,WAVELENTH_GLONASS_S1,time_length,min_height=min_height,max_height=max_height)
+                time_dict[satellite_code], height_dict[satellite_code],\
+                    azimut_dict[satellite_code],\
+                elevation_dict[satellite_code], frequency_dict[satellite_code],\
+                    power_dict[satellite_code] =\
+                split_result(dataframe,WAVELENTH_GLONASS_S1,time_length,\
+                    min_height=min_height,max_height=max_height)
             else:
-                time_dict[satellite_code], height_dict[satellite_code], azimut_dict[satellite_code],\
-                elevation_dict[satellite_code], frequency_dict[satellite_code],power_dict[satellite_code] =\
-                split_result(dataframe,WAVELENTH_GPS_S1,time_length,min_height=min_height,max_height=max_height)
+                time_dict[satellite_code], height_dict[satellite_code],\
+                    azimut_dict[satellite_code],\
+                elevation_dict[satellite_code], frequency_dict[satellite_code],\
+                    power_dict[satellite_code] =\
+                split_result(dataframe,WAVELENTH_GPS_S1,time_length,\
+                    min_height=min_height,max_height=max_height)
         except IndexError:
             continue
     return time_dict,height_dict,azimut_dict,elevation_dict,frequency_dict,power_dict
 
-def plot_fresnel_zone(time_str:str, equipment_index:int, azimut_dict:dict, height_dict:dict, elevation_dict:dict) -> None:
+def plot_fresnel_zone(time_str:str, equipment_index:int,\
+    azimut_dict:dict, height_dict:dict, elevation_dict:dict) -> None:
     """
     This function will plot the fresnel zone for all valid satellite on map using Google Map API
 
@@ -166,14 +204,17 @@ def plot_fresnel_zone(time_str:str, equipment_index:int, azimut_dict:dict, heigh
         azimut_dict (dict): azimut dictionary
         height_dict (dict): height dictionary
         elevation_dict (dict): elevation dictionary
-    """    
+    """
     file_name = f'{time_str}#{equipment_index}'
 
     meas_file = os.path.abspath("../data/documentation.xlsx")
     df_meas = pd.read_excel(meas_file)
-    lat_center = df_meas[(df_meas["time"]==time_str) & (df_meas["equipment"]==equipment_index)]["latitude"].values[0]
-    lon_center = df_meas[(df_meas["time"]==time_str) & (df_meas["equipment"]==equipment_index)]["longitude"].values[0]
-    height_center = df_meas[(df_meas["time"]==time_str) & (df_meas["equipment"]==equipment_index)]["height(GNSS)"].values[0]
+    lat_center = df_meas[(df_meas["time"]==time_str) &\
+        (df_meas["equipment"]==equipment_index)]["latitude"].values[0]
+    lon_center = df_meas[(df_meas["time"]==time_str) &\
+        (df_meas["equipment"]==equipment_index)]["longitude"].values[0]
+    height_center = df_meas[(df_meas["time"]==time_str) &\
+        (df_meas["equipment"]==equipment_index)]["height(GNSS)"].values[0]
     sate_name = []
     north_list = []
     east_list = []
@@ -181,22 +222,25 @@ def plot_fresnel_zone(time_str:str, equipment_index:int, azimut_dict:dict, heigh
     for satellite_code in azimut_dict:
         for i,item in enumerate(azimut_dict[satellite_code]):
             sate_name.append(satellite_code)
-            distance = height_dict[satellite_code][i] / np.tan(elevation_dict[satellite_code][0]/180*np.pi)
+            distance = height_dict[satellite_code][i]\
+                / np.tan(elevation_dict[satellite_code][0]/180*np.pi)
             azimut = azimut_dict[satellite_code][i]
-            
+
             north_list.append(distance * np.cos(azimut/180*np.pi))
             east_list.append(distance * np.sin(azimut/180*np.pi))
             local_height_list.append(height_dict[satellite_code][i])
-    df_coor = pd.DataFrame({"satellite":sate_name,"north":north_list,"east":east_list,"height":local_height_list})
+    df_coor = pd.DataFrame({"satellite":sate_name,"north":north_list,\
+        "east":east_list,"height":local_height_list})
 
     for index in df_coor.index:
         north = df_coor.loc[index]["north"]
         east = df_coor.loc[index]["east"]
         down = -df_coor.loc[index]["height"]
         (df_coor.loc[index,"lat"],df_coor.loc[index,"lon"],df_coor.loc[index,"alt"])\
-            = enu2geodetic(east, north, down, lat_center, lon_center, height_center, ell=None, deg=True)
+            = enu2geodetic(east, north, down, lat_center,\
+            lon_center, height_center, ell=None, deg=True)
 
-
+    color_dict = get_satellite_color()
     gmap = gmplot.GoogleMapPlotter(lat_center,lon_center, 15)
     gmap.scatter([lat_center], [lon_center], '#FF0000', size = 1, marker = True)
     sat_name_plot = "ini"
@@ -204,8 +248,8 @@ def plot_fresnel_zone(time_str:str, equipment_index:int, azimut_dict:dict, heigh
         lat = df_coor.loc[item]["lat"]
         lon = df_coor.loc[item]["lon"]
         if df_coor.loc[item]["satellite"] != sat_name_plot:
-            color = ["#"+"".join([random.choice("0123456789ABCDEF") for j in range(6)])]
+            color = color_dict[df_coor.loc[item]["satellite"]]
             sat_name_plot = df_coor.loc[item]["satellite"]
         gmap.scatter([lat], [lon], color, size = 1, marker = False)
-    path = os.path.abspath("../data/color/")
+    path = os.path.abspath("../data/fresnel_zone/")
     gmap.draw(f"{path}\\\\{file_name}.html")
