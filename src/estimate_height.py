@@ -76,8 +76,6 @@ def split_result(dataframe,wavelength,time_interval,min_height,max_height):
         time_end = time_end = time_start + time_delta
     return (time_list, height_list, azimut_list, elevation_list, frequency_list,power_list)
 
-
-
 def estimate_height(dataframe_in_interval, wavelength, min_height, max_height):
     '''
     This function uses LSP to estimate the height:
