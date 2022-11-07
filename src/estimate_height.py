@@ -158,7 +158,17 @@ def estimate_all_satellite(main_path:str,azimut_mask:list,elevation_mask:list,mi
             continue
     return time_dict,height_dict,azimut_dict,elevation_dict,frequency_dict,power_dict
 
-def plot_fresnel_zone(time_str,equipment_index,azimut_dict, height_dict, elevation_dict):
+def plot_fresnel_zone(time_str:str, equipment_index:int, azimut_dict:dict, height_dict:dict, elevation_dict:dict) -> None:
+    """
+    This function will plot the fresnel zone for all valid satellite on map using Google Map API
+
+    Args:
+        time_str (str): the date string in form "yyyy-mm-dd"
+        equipment_index (int): the equipment or any other index
+        azimut_dict (dict): azimut dictionary
+        height_dict (dict): height dictionary
+        elevation_dict (dict): elevation dictionary
+    """    
     file_name = f'{time_str}#{equipment_index}'
 
     meas_file = os.path.abspath("../data/documentation.xlsx")
@@ -199,5 +209,5 @@ def plot_fresnel_zone(time_str,equipment_index,azimut_dict, height_dict, elevati
             color = ["#"+"".join([random.choice("0123456789ABCDEF") for j in range(6)])]
             sat_name_plot = df_coor.loc[item]["satellite"]
         gmap.scatter([lat], [lon], color, size = 1, marker = False)
-
-    gmap.draw(f"{file_name}.html")
+    path = os.path.abspath("../data/color/")
+    gmap.draw(f"{path}\\\\{file_name}.html")
