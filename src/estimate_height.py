@@ -193,6 +193,23 @@ def estimate_all_satellite(main_path:str,azimut_mask:list,elevation_mask:list,\
             continue
     return time_dict,height_dict,azimut_dict,elevation_dict,frequency_dict,power_dict
 
+def __calc_fresnel_zone(wave_length:float,height:float,elevation:float,azimut:float):
+    elevation = elevation/180*np.pi
+    azimut = azimut/180*np.pi
+
+    d = wave_length/2
+    r = height / np.tan(elevation)+(d/np.sin(elevation)) / np.tan(elevation)
+    b = np.sqrt(2*d*height/np.sin(elevation) + np.square(d/np.sin(elevation)))
+    a = b/np.sin(elevation)
+
+    theta = np.linspace(0,2*np.pi,num=200)
+    x_new = a * np.cos(theta) + r
+    y_new = b * np.sin(theta)
+
+    east = np.sin(azimut)*x_new - np.cos(azimut)*y_new
+    north = np.sin(azimut)*y_new + np.cos(azimut)*x_new
+    return east,north
+
 def plot_fresnel_zone(time_str:str, equipment_index:int,\
     azimut_dict:dict, height_dict:dict, elevation_dict:dict) -> None:
     """
@@ -220,36 +237,35 @@ def plot_fresnel_zone(time_str:str, equipment_index:int,\
     east_list = []
     local_height_list = []
     for satellite_code in azimut_dict:
-        for i,item in enumerate(azimut_dict[satellite_code]):
-            sate_name.append(satellite_code)
-            distance = height_dict[satellite_code][i]\
-                / np.tan(elevation_dict[satellite_code][0]/180*np.pi)
+        if satellite_code[0]=='R':
+            wave_length = WAVELENTH_GLONASS_S1
+        else:
+            wave_length = WAVELENTH_GPS_S1
+        for i,_ in enumerate(azimut_dict[satellite_code]):
             azimut = azimut_dict[satellite_code][i]
+            elevation = elevation_dict[satellite_code][i]
+            height = height_dict[satellite_code][i]
+            east,north = __calc_fresnel_zone(wave_length,height,elevation,azimut)
 
-            north_list.append(distance * np.cos(azimut/180*np.pi))
-            east_list.append(distance * np.sin(azimut/180*np.pi))
+            sate_name.append(satellite_code)
+            north_list.append(north)
+            east_list.append(east)
             local_height_list.append(height_dict[satellite_code][i])
-    df_coor = pd.DataFrame({"satellite":sate_name,"north":north_list,\
-        "east":east_list,"height":local_height_list})
-
-    for index in df_coor.index:
-        north = df_coor.loc[index]["north"]
-        east = df_coor.loc[index]["east"]
-        down = -df_coor.loc[index]["height"]
-        (df_coor.loc[index,"lat"],df_coor.loc[index,"lon"],df_coor.loc[index,"alt"])\
-            = enu2geodetic(east, north, down, lat_center,\
-            lon_center, height_center, ell=None, deg=True)
 
     color_dict = get_satellite_color()
     gmap = gmplot.GoogleMapPlotter(lat_center,lon_center, 15)
     gmap.scatter([lat_center], [lon_center], '#FF0000', size = 1, marker = True)
     sat_name_plot = "ini"
-    for item in df_coor.index:
-        lat = df_coor.loc[item]["lat"]
-        lon = df_coor.loc[item]["lon"]
-        if df_coor.loc[item]["satellite"] != sat_name_plot:
-            color = color_dict[df_coor.loc[item]["satellite"]]
-            sat_name_plot = df_coor.loc[item]["satellite"]
-        gmap.scatter([lat], [lon], color, size = 1, marker = False)
+    for i,sate in enumerate(sate_name):
+        north = north_list[i]
+        east = east_list[i]
+        down = -east_list[i]
+        (lat,lon,_) = enu2geodetic(east, north, down, lat_center,\
+            lon_center, height_center, deg=True)
+
+        if sate != sat_name_plot:
+            color = color_dict[sate]
+            sat_name_plot = sate
+        gmap.plot(lats=lat, lngs=lon, color=color, edge_width=1)
     path = os.path.abspath("../data/fresnel_zone/")
     gmap.draw(f"{path}\\\\{file_name}.html")
