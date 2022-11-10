@@ -22,7 +22,7 @@ if __name__ == "__main__":
             gnss_sate_name.append(f'R0{i+1}')
         color = ["#"+"".join([random.choice("0123456789ABCDEF") for j in range(6)])]
         gnss_color.append(color[0])
-    for i in range(30):
+    for i in range(33):
         if i>8:
             gnss_sate_name.append(f'E{i+1}')
         else:
