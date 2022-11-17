@@ -87,8 +87,14 @@ def split_result(dataframe,wavelength,time_interval,min_height,max_height):
                 power_list.append(power)
                 height_list.append(h)
                 time_list.append(time_start + time_delta/2)
-                azimut_list.append(np.average(dataframe_in_interval['azimut']))
-                elevation_list.append(np.average(dataframe_in_interval['elevation']))
+                azi_info = {'avg':np.average(dataframe_in_interval['azimut']),\
+                            'max':max(dataframe_in_interval['azimut']),\
+                            'min':min(dataframe_in_interval['azimut'])}
+                azimut_list.append(azi_info)
+                ele_info = {'avg':np.average(dataframe_in_interval['elevation']),\
+                            'max':max(dataframe_in_interval['elevation']),\
+                            'min':min(dataframe_in_interval['elevation'])}
+                elevation_list.append(ele_info)
         time_start = time_end
         time_end = time_end = time_start + time_delta
     return (time_list, height_list, azimut_list, elevation_list, frequency_list,power_list)
