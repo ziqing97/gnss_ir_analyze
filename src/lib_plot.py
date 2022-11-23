@@ -163,3 +163,47 @@ def plot_ele_azi_height(title,elevation_dict:dict,azimut_dict:dict,height_dict:d
     plt.title(title)
     plt.xlabel("elevation")
     plt.ylabel("azimut")
+
+def plot_skyplot(title:str,elevation_dict:dict,azimut_dict:dict,\
+                height_dict:dict,default_height:int=0) -> None:
+    """
+    This function does the skyplot
+    Args:
+        title (str): _description_
+        elevation_dict (dict): _description_
+        azimut_dict (dict): _description_
+        height_dict (dict): _description_
+        default_height (int, optional): _description_. Defaults to 0.
+    """
+    ele_plot=[]
+    ele_err = [[],[]]
+    azi_plot=[]
+    azi_err=[[],[]]
+    h_plot=[]
+    for satellite_code in elevation_dict:
+        for i,_ in enumerate(elevation_dict[satellite_code]):
+            for h in height_dict[satellite_code]:
+                ele_plot.append(elevation_dict[satellite_code][i]['avg'])
+                ele_err[0].append(elevation_dict[satellite_code][i]['min'])
+                ele_err[1].append(elevation_dict[satellite_code][i]['max'])
+                azi_plot.append(azimut_dict[satellite_code][i]['avg'])
+                azi_err[0].append(azimut_dict[satellite_code][i]['min'])
+                azi_err[1].append(azimut_dict[satellite_code][i]['max'])
+                h_plot.append(h)
+
+    norm = plt.Normalize(vmin=min(h_plot),vmax=max(h_plot))
+    norm = matplotlib.colors.Normalize(vmin=min(h_plot),vmax=max(h_plot), clip=True)
+    mapper = cm.ScalarMappable(norm=norm, cmap='jet')
+    h_color = np.array([(mapper.to_rgba(v)) for v in h_plot])
+    _, ax = plt.subplots(subplot_kw={'projection': 'polar'})
+    for e_min, e_max, a_min, a_max, h, color in zip(ele_err[0],ele_err[1],\
+         azi_err[0], azi_err[1], h_plot, h_color):
+
+        a_range = np.linspace(a_min,a_max,100)
+        e_range = np.linspace(e_min,e_max,100)
+
+        if default_height == 0:
+            ax.plot(a_range/180*np.pi, h_plot/np.tan(e_range/180*np.pi), color=color)
+        else:
+            ax.plot(a_range/180*np.pi, default_height/np.tan(e_range/180*np.pi), color=color)
+    plt.title(title)
