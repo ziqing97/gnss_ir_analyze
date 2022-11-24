@@ -184,3 +184,28 @@ def estimate_all_satellite(main_path:str,azimut_mask:list,elevation_mask:list,\
         except IndexError:
             continue
     return time_dict,height_dict,azimut_dict,elevation_dict,frequency_dict,power_dict
+
+def generate_likelyhood(frequency_dict,power_dict):
+    """
+    generates a likelyhood using all lsp results
+
+    Args:
+        frequency_dict (_type_): _description_
+        power_dict (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    power_likelyhood = 1
+    frequency = np.array([])
+    for satellite_code in frequency_dict:
+        for sig in power_dict[satellite_code]:
+            power_likelyhood = np.multiply(sig,power_likelyhood)
+        if frequency.any():
+            continue
+        else:
+            if frequency_dict[satellite_code]:
+                frequency=frequency_dict[satellite_code][0]
+            else:
+                continue
+    return frequency,power_likelyhood
