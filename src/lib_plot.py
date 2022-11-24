@@ -196,14 +196,14 @@ def plot_skyplot(title:str,elevation_dict:dict,azimut_dict:dict,\
     mapper = cm.ScalarMappable(norm=norm, cmap='jet')
     h_color = np.array([(mapper.to_rgba(v)) for v in h_plot])
     _, ax = plt.subplots(subplot_kw={'projection': 'polar'})
-    for e_min, e_max, a_min, a_max, h, color in zip(ele_err[0],ele_err[1],\
+    for ele, e_min, e_max, a_min, a_max, h, color in zip(ele_plot,ele_err[0],ele_err[1],\
          azi_err[0], azi_err[1], h_plot, h_color):
 
         a_range = np.linspace(a_min,a_max,100)
-        e_range = np.linspace(e_min,e_max,100)
-
         if default_height == 0:
+            e_range = np.linspace(e_min,e_max,100)
             ax.plot(a_range/180*np.pi, h_plot/np.tan(e_range/180*np.pi), color=color)
         else:
+            e_range = np.ones_like(a_range)*ele
             ax.plot(a_range/180*np.pi, default_height/np.tan(e_range/180*np.pi), color=color)
     plt.title(title)
