@@ -93,7 +93,6 @@ def estimate_height(dataframe_in_interval:pd.DataFrame, wavelength, min_height, 
     Returns:
         height: the estimated height during the given time
     '''
-    threshold = 2/3
     dataframe_in_interval_sort = dataframe_in_interval.sort_values(by='elevation')
     # sort data by elevation
     elevation_sort = np.array([dataframe_in_interval_sort['elevation']])
@@ -123,7 +122,7 @@ def estimate_height(dataframe_in_interval:pd.DataFrame, wavelength, min_height, 
         # lsp analysis
         x_data = (np.sin(elevation_filtered.T*np.pi/180) * 4 * np.pi / wavelength).ravel()
         y_data = snr_ref.ravel()
-        frequency = np.arange(min_height,max_height+1,0.001)
+        frequency = np.arange(min_height,max_height,0.001)
 
         power = signal.lombscargle(x_data,y_data,frequency,normalize=True)
         plt.plot(frequency,power)
@@ -132,7 +131,6 @@ def estimate_height(dataframe_in_interval:pd.DataFrame, wavelength, min_height, 
             peaks_power = power[peaks]
 
             height_peak = frequency[peaks]
-            height = height_peak[peaks_power>max(peaks_power)*threshold]
             height = height_peak[peaks_power==max(peaks_power)]
         else:
             height = []
