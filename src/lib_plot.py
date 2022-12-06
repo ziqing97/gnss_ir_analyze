@@ -154,6 +154,7 @@ def plot_ele_azi_height(title,elevation_dict:dict,azimut_dict:dict,height_dict:d
     mapper = cm.ScalarMappable(norm=norm, cmap='jet')
     h_color = np.array([(mapper.to_rgba(v)) for v in h_plot])
     fig=plt.scatter(ele_plot,azi_plot,c=h_plot,cmap='jet')# RdBu,coolwarm,hsv tried
+    fig.set_size_inches(18.5, 10.5)
     plt.colorbar(fig)
     for ele, azi, e_min, e_max, a_min, a_max, color in zip(ele_plot, azi_plot,\
         ele_err[0],ele_err[1], azi_err[0], azi_err[1], h_color):
