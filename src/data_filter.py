@@ -7,9 +7,12 @@ Author: Ziqing Yu
 Last edited on 13/06/2022
 '''
 
+
+from datetime import datetime, timedelta
 import pandas as pd
 import read_compact_data as rcd
 
+# pylint:disable=invalid-name
 
 def generate_dataframe(main_path):
     '''
@@ -106,7 +109,8 @@ def sn1_filter(dataframe:pd.DataFrame) -> pd.DataFrame:
     dataframe = dataframe[dataframe['snr1'].notnull()]
     return dataframe
 
-def clean_data(main_path:str, elevation_mask:list, azimut_mask:list, sn1_trigger:bool)->pd.DataFrame:
+def clean_data(main_path:str, elevation_mask:list,\
+    azimut_mask:list, sn1_trigger:bool)->pd.DataFrame:
     """
     this function does the necessary filtering for the data
     Args:
@@ -130,3 +134,36 @@ def clean_data(main_path:str, elevation_mask:list, azimut_mask:list, sn1_trigger
     for satellite_code in data_empty_code:
         del data_dict[satellite_code]
     return data_dict
+
+def split_data(data_dict:pd.DataFrame,starttime:datetime,\
+    endtime:datetime,deltatime:timedelta)->dict:
+    """
+    this function split the whole dataset in to small parts in certain time intervals
+    Args:
+        data_dict (pd.DataFrame): _description_
+        starttime (datetime): _description_
+        endtime (datetime): _description_
+        deltatime (timedelta): _description_
+
+    Returns:
+        dict: _description_
+    """
+    time_list = [starttime]
+    while time_list[-1] < endtime:
+        time_list.append(time_list[-1]+deltatime)
+    df_time = pd.DataFrame({'time_tick':time_list})
+
+    satellite_list = list(data_dict.keys())
+    split_data_dict = {}
+    for satellite_code in satellite_list:
+        dataframe = data_dict[satellite_code]
+        temp_list = []
+        for i in range(0,len(df_time)-1):
+            t1 = df_time.iloc[i]['time_tick']
+            t2 = df_time.iloc[i+1]['time_tick']
+            df_temp = dataframe[(pd.to_datetime(dataframe['time'])>t1)\
+                & (pd.to_datetime(dataframe['time'])<=t2)]
+            if not df_temp.empty:
+                temp_list.append(df_temp)
+        split_data_dict[satellite_code] = temp_list
+    return split_data_dict
