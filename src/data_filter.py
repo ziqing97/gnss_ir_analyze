@@ -56,7 +56,7 @@ def generate_dataframe(main_path):
         dataframe_dict[satellite_code] = dataframe
     return dataframe_dict
 
-def azimut_filter(dataframe,azimut_mask):
+def azimut_filter(dataframe:pd.DataFrame,azimut_mask:list) -> pd.DataFrame:
     '''
     this function filter the data using an azimut
     mask
@@ -79,7 +79,7 @@ def azimut_filter(dataframe,azimut_mask):
     dataframe = dataframe[azimut_index]
     return dataframe
 
-def elevation_filter(dataframe,elevation_mask):
+def elevation_filter(dataframe:pd.DataFrame,elevation_mask:list) -> pd.DataFrame:
     '''
     this function filter the data using an elevation
     mask
@@ -93,3 +93,40 @@ def elevation_filter(dataframe,elevation_mask):
         (dataframe['elevation'] < elevation_mask[1])
     dataframe = dataframe[elevation_index]
     return dataframe
+
+def sn1_filter(dataframe:pd.DataFrame) -> pd.DataFrame:
+    """
+    this function filter out the data without L1 snr
+    Args:
+        dataframe (pd.DataFrame): dataframe generated from 'generate dataframe'
+
+    Returns:
+        pd.DataFrame: same as input, the invalid data outfiltered
+    """
+    dataframe = dataframe[dataframe['snr1'].notnull()]
+    return dataframe
+
+def clean_data(main_path:str, elevation_mask:list, azimut_mask:list, sn1_trigger:bool)->pd.DataFrame:
+    """
+    this function does the necessary filtering for the data
+    Args:
+        main_path (_type_): where all compactfiles exist
+        elevation_mask (list): a list with 2 elements [min, max]
+        azimut_mask (list): a list with 2 elements [min, max] in clockwise
+                     direction
+        sn1_trigger (bool): if the snr1 nan should be filtered out
+    """
+    data_dict = generate_dataframe(main_path)
+    data_empty_code = []
+    satellite_list = data_dict.keys()
+    for satellite_code in satellite_list:
+        data_dict[satellite_code] = azimut_filter(data_dict[satellite_code],azimut_mask)
+        data_dict[satellite_code] = elevation_filter(data_dict[satellite_code],elevation_mask)
+        if sn1_trigger:
+            data_dict[satellite_code] = sn1_filter(data_dict[satellite_code])
+        if data_dict[satellite_code].empty:
+            data_empty_code.append(satellite_code)
+
+    for satellite_code in data_empty_code:
+        del data_dict[satellite_code]
+    return data_dict
