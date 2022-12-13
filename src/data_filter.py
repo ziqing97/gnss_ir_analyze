@@ -7,7 +7,6 @@ Author: Ziqing Yu
 Last edited on 13/06/2022
 '''
 
-
 from datetime import datetime, timedelta
 import pandas as pd
 import read_compact_data as rcd
