@@ -123,18 +123,11 @@ def data_prepare(split_data_dict,frequency):
             # do the lsp analyse
             elevation_sort = np.array([dataframe_sort['elevation']]).T
             snr_sort = np.array([dataframe_sort['snr1']]).T
-            debug_ele = []
-            debug_snr = []
-            try:
-                power = calc_lsp_power(elevation_sort,snr_sort,frequency,wavelength)
-            except:
-                power = frequency
-                debug_ele.append(elevation_sort)
-                debug_snr.append(debug_snr)
+            power = calc_lsp_power(elevation_sort,snr_sort,frequency,wavelength)
             split_data_dict_copy[satellite_code]['power'].append(power)
 
             # get the possible height
-    return split_data_dict_copy, debug_ele, debug_snr
+    return split_data_dict_copy
 
 def extract_height_as_max_peak(result_dict,frequency):
     """

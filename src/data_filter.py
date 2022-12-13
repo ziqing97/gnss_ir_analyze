@@ -157,13 +157,16 @@ def split_data(data_dict:pd.DataFrame,starttime:datetime,\
     for satellite_code in satellite_list:
         dataframe = data_dict[satellite_code]
         temp_list = []
+        temp_time_list = []
         split_data_dict[satellite_code] = {}
         for i in range(0,len(df_time)-1):
             t1 = df_time.iloc[i]['time_tick']
             t2 = df_time.iloc[i+1]['time_tick']
             df_temp = dataframe[(pd.to_datetime(dataframe['time'])>t1)\
                 & (pd.to_datetime(dataframe['time'])<=t2)]
-            if not df_temp.empty:
+            if df_temp.shape[0]==deltatime.seconds:
                 temp_list.append(df_temp)
+                temp_time_list.append(t1+deltatime/2)
         split_data_dict[satellite_code]['raw'] = temp_list
+        split_data_dict[satellite_code]['time'] = temp_time_list
     return split_data_dict
