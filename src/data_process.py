@@ -6,6 +6,8 @@ analyse
 from scipy import signal
 import numpy as np
 
+# pylint:disable=invalid-name
+
 C = 299792458 # m/s
 FREQUENCY_GPS_L1 = 1575.42 * 10**6
 WAVELENTH_GPS_S1 = C/FREQUENCY_GPS_L1
@@ -152,3 +154,34 @@ def extract_height_as_max_peak(result_dict,frequency):
             else:
                 result_dict_copy[satellite_code]['maximal_height'].append(float('nan'))
     return result_dict_copy
+
+def generate_power_likelihood(result_dict):
+    """
+    this function generates the power likelihood
+    using all lsp
+    Args:
+        result_dict (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    power_likelyhood = 1
+    for satellite_code in result_dict:
+        for sig in result_dict[satellite_code]['power']:
+            power_likelyhood = np.multiply(sig,power_likelyhood)
+    return power_likelyhood
+
+def scale_power_to_unit_area(x,y):
+    """
+    calculate the area of a function to unit area
+    Args:
+        x (_type_): _description_
+        y (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    area = np.sum(np.multiply((x[2:]-x[0:-2])/2, y[1:-1]))
+    scale = 1/area
+    y_scaled = y*scale
+    return y_scaled
