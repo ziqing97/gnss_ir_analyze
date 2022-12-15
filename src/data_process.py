@@ -185,3 +185,30 @@ def scale_power_to_unit_area(x,y):
     scale = 1/area
     y_scaled = y*scale
     return y_scaled
+
+def extract_height_near_one_point(result_dict,height_likelihood,frequency):
+    """
+    this function extracts the height from height near the likelihood peak
+    Args:
+        result_dict (_type_): _description_
+        height_likelihood (_type_): _description_
+        frequency (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    result_dict_copy = result_dict
+    for satellite_code in result_dict_copy:
+        result_dict_copy[satellite_code]['nearest_peak_height'] = []
+        for power in result_dict_copy[satellite_code]['power']:
+            peaks,_= signal.find_peaks(power)
+            if peaks.size != 0:
+                height_at_peak = frequency[peaks]
+
+                diff = height_at_peak-height_likelihood
+                height = height_at_peak[abs(diff) == min(abs(diff))]
+
+                result_dict_copy[satellite_code]['nearest_peak_height'].append(height[0])
+            else:
+                result_dict_copy[satellite_code]['nearest_peak_height'].append(float('nan'))
+    return result_dict_copy
