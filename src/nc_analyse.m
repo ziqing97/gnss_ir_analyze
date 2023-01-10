@@ -16,7 +16,7 @@ unix_t_extract = unix_t((unix_t>t1) & (unix_t<t2));
 s_ele_extract = surface_elevation((unix_t>t1) & (unix_t<t2));
 
 figure
-plot(unix_t_extract,s_ele_extract)
+scatter(unix_t_extract,s_ele_extract)
 ylim([236,237])
 
 writematrix([[0;unix_t_extract'],[1;s_ele_extract']],'20221031_gauge.csv') 
