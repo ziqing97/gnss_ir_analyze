@@ -3,10 +3,16 @@ This script does the calculation of the gnss-ir
 analyse
 
 """
+from datetime import datetime,timedelta,timezone
+
 from scipy import signal
 import numpy as np
+from tqdm import tqdm
 
-# pylint:disable=invalid-name
+
+import data_filter as dafi
+
+# pylint:disable=invalid-name,consider-using-dict-items
 
 C = 299792458 # m/s
 FREQUENCY_GPS_L1 = 1575.42 * 10**6
@@ -212,3 +218,49 @@ def extract_height_near_one_point(result_dict,height_likelihood,frequency):
             else:
                 result_dict_copy[satellite_code]['nearest_peak_height'].append(float('nan'))
     return result_dict_copy
+
+def generate_timeseries(main_path, azimut_mask, elevation_mask, min_height, max_height, t_range):
+    """
+
+    Args:
+        main_path (_type_): _description_
+        azimut_mask (_type_): _description_
+        elevation_mask (_type_): _description_
+        min_height (_type_): _description_
+        max_height (_type_): _description_
+        t_range (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    frequency = generate_frequency(min_height=min_height,max_height=max_height)
+    signal_ts = {}
+
+    for dt in tqdm(range(0,t_range-1)):
+        starttime = datetime(year=2022,month=10,day=31,hour=8,\
+            minute=0+dt,second=0,tzinfo=timezone.utc)
+        endtime = datetime(year=2022,month=10,day=31,hour=14,\
+            minute=0+dt,second=0,tzinfo=timezone.utc)
+        deltatime = timedelta(minutes=t_range)
+
+        data_dict = dafi.clean_data(main_path,azimut_mask=azimut_mask,\
+            elevation_mask=elevation_mask,sn1_trigger=True)
+
+        split_data_dict = dafi.split_data(data_dict,starttime,endtime,deltatime)
+        result_dict = data_prepare(split_data_dict,frequency=frequency)
+        result_dict_1031 = extract_height_as_max_peak(result_dict,frequency=frequency)
+
+        for satellite_code in result_dict_1031:
+            for t,p in zip(result_dict_1031[satellite_code]['time'],\
+                result_dict_1031[satellite_code]['power']):
+                if t in signal_ts:
+                    signal_ts[t] = np.multiply(p,signal_ts[t])
+                else:
+                    signal_ts[t] = p
+    height_ts = {}
+    for t in signal_ts:
+        p = signal_ts[t]
+        index = p==max(p)
+        h = frequency[index]
+        height_ts[t] = h[0]
+    return height_ts
