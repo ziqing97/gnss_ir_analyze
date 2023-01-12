@@ -219,7 +219,8 @@ def extract_height_near_one_point(result_dict,height_likelihood,frequency):
                 result_dict_copy[satellite_code]['nearest_peak_height'].append(float('nan'))
     return result_dict_copy
 
-def generate_timeseries(main_path, azimut_mask, elevation_mask, min_height, max_height, t_range):
+def generate_timeseries(main_path, azimut_mask, elevation_mask, \
+    min_height, max_height, t_range, month, day):
     """
 
     Args:
@@ -237,9 +238,9 @@ def generate_timeseries(main_path, azimut_mask, elevation_mask, min_height, max_
     signal_ts = {}
 
     for dt in tqdm(range(0,t_range-1)):
-        starttime = datetime(year=2022,month=10,day=31,hour=8,\
+        starttime = datetime(year=2022,month=month,day=day,hour=8,\
             minute=0+dt,second=0,tzinfo=timezone.utc)
-        endtime = datetime(year=2022,month=10,day=31,hour=14,\
+        endtime = datetime(year=2022,month=month,day=day,hour=14,\
             minute=0+dt,second=0,tzinfo=timezone.utc)
         deltatime = timedelta(minutes=t_range)
 
