@@ -154,3 +154,5 @@ cython_debug/
 data/for_lab/*
 
 data/RhineStations.nc
+
+data/upload/*
