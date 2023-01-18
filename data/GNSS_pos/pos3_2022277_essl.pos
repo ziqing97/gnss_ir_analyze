@@ -1,0 +1,41 @@
+essl                                                        STATION
+Static      10.000000 10.000000 10.000000                   POS MODE/PRIORI (meter)
+YES                                                         OBS STRICT EDITING
+2022 10  4  8 12 49.00                                      OBS FIRST EPOCH
+2022 10  4 11  4 14.00                                      OBS LAST EPOCH
+    1.00                                                    OBS INTERVAL (sec)
+    7.00                                                    OBS MASK ANGLE (deg)
+    0.30                                                    MEASUREMENT NOISE PSEUDORANGE (1-SIGMA, meter)
+    0.01                                                    MEASUREMENT NOISE CARRIER PHASE (1-SIGMA, cycle)
+WUM0MGXRAP_20222770000_01D_01M_ORB.SP3                      SAT ORBIT
+WUM0MGXRAP_20222770000_01D_30S_CLK.CLK                      SAT CLOCK
+WUM0MGXRAP_20222770000_01D_01D_ERP.ERP                      SAT ERP
+WUM0MGXRAP_20222770000_01D_30S_ATT.OBX                      SAT ATTITUDE
+WUM0MGXRAP_20222770000_01D_01D_ABS.BIA                      SAT BIAS
+LEICA GS15                                                  SITE RECEIVER TYPE
+LEIGS15         NONE                                        SITE ANTENNA TYPE
+        0.0000        0.0000        0.0000                  SITE ANTENNA E/N/H (meter)
+IGS14_2223                                                  TABLE ANTEX
+STO                                                         TROP ZENITH
+PWC:720                                                     TROP GRADIENT
+NO                                                          IONO 2ND
+SOLID  POLE                                                 TIDES
+NO                                                          AMB FIXING
+Start Field Description                                     COMMENT
+Name                                                        STATION NAME
+Mjd                                                         MODIFIED JULIAN DAY
+X                                                           X COORDINATE (meter)
+Y                                                           Y COORDINATE (meter)
+Z                                                           Z COORDINATE (meter)
+Sx                                                          DIAGONAL COFACTOR OF X COORDINATE
+Sy                                                          DIAGONAL COFACTOR OF Y COORDINATE
+Sz                                                          DIAGONAL COFACTOR OF Z COORDINATE
+Rxy                                                         OFF-DIAGONAL COFACTOR OF X AND Y COORDINATES
+Rxz                                                         OFF-DIAGONAL COFACTOR OF X AND Z COORDINATES
+Ryz                                                         OFF-DIAGONAL COFACTOR OF Y AND Z COORDINATES
+Sig0                                                        SQUARE ROOT OF VARIANCE FACTOR (meter)
+Nobs                                                        NUMBER OF OBSERVATIONS
+End Field Description                                       COMMENT
+                                                            END OF HEADER
+*Name         Mjd              X              Y              Z                       Sx                       Sy                       Sz                      Rxy                      Rxz                      Ryz                     Sig0           Nobs
+ essl  59856.4018   4159723.3999    682601.2204   4770918.0379     0.21639315609461E-07     0.14314006370710E-07     0.15516175858147E-07     0.86442713914119E-08     0.13092347866571E-07     0.54142372707408E-08     0.29569310794129E+01         117530
