@@ -137,30 +137,6 @@ def data_prepare(split_data_dict,frequency):
             # get the possible height
     return split_data_dict_copy
 
-def extract_height_as_max_peak(result_dict,frequency):
-    """
-    this function extracts the height from the maximal height
-    Args:
-        result_dict (_type_): _description_
-        frequency (_type_): _description_
-
-    Returns:
-        _type_: _description_
-    """
-    result_dict_copy = result_dict
-    for satellite_code in result_dict_copy:
-        result_dict_copy[satellite_code]['maximal_height'] = []
-        for power in result_dict_copy[satellite_code]['power']:
-            peaks,_= signal.find_peaks(power)
-            if peaks.size != 0:
-                power_at_peak = power[peaks]
-                height_at_peak = frequency[peaks]
-                height = height_at_peak[power_at_peak==max(power_at_peak)]
-                result_dict_copy[satellite_code]['maximal_height'].append(height[0])
-            else:
-                result_dict_copy[satellite_code]['maximal_height'].append(float('nan'))
-    return result_dict_copy
-
 def generate_power_likelihood(result_dict):
     """
     this function generates the power likelihood
@@ -192,33 +168,6 @@ def scale_power_to_unit_area(x,y):
     y_scaled = y*scale
     return y_scaled
 
-def extract_height_near_one_point(result_dict,height_likelihood,frequency):
-    """
-    this function extracts the height from height near the likelihood peak
-    Args:
-        result_dict (_type_): _description_
-        height_likelihood (_type_): _description_
-        frequency (_type_): _description_
-
-    Returns:
-        _type_: _description_
-    """
-    result_dict_copy = result_dict
-    for satellite_code in result_dict_copy:
-        result_dict_copy[satellite_code]['nearest_peak_height'] = []
-        for power in result_dict_copy[satellite_code]['power']:
-            peaks,_= signal.find_peaks(power)
-            if peaks.size != 0:
-                height_at_peak = frequency[peaks]
-
-                diff = height_at_peak-height_likelihood
-                height = height_at_peak[abs(diff) == min(abs(diff))]
-
-                result_dict_copy[satellite_code]['nearest_peak_height'].append(height[0])
-            else:
-                result_dict_copy[satellite_code]['nearest_peak_height'].append(float('nan'))
-    return result_dict_copy
-
 def generate_timeseries(main_path, azimut_mask, elevation_mask, \
     min_height, max_height, t_range, month, day):
     """
@@ -249,11 +198,10 @@ def generate_timeseries(main_path, azimut_mask, elevation_mask, \
 
         split_data_dict = dafi.split_data(data_dict,starttime,endtime,deltatime)
         result_dict = data_prepare(split_data_dict,frequency=frequency)
-        result_dict_1031 = extract_height_as_max_peak(result_dict,frequency=frequency)
 
-        for satellite_code in result_dict_1031:
-            for t,p in zip(result_dict_1031[satellite_code]['time'],\
-                result_dict_1031[satellite_code]['power']):
+        for satellite_code in result_dict:
+            for t,p in zip(result_dict[satellite_code]['time'],\
+                result_dict[satellite_code]['power']):
                 if t in signal_ts:
                     signal_ts[t] = np.multiply(p,signal_ts[t])
                 else:
