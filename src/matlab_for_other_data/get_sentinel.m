@@ -4,9 +4,12 @@ clc;close all;clearvars
 %% Load Data (height in ellipse)
 S3Afile = "C:\Users\yuziq\Documents\gnss_ir_analyze\data\altbundle\S3AEsslingen_s1_p3101t586o110sr1000or80.mat";
 load(S3Afile)
+data = S3AEsslingen_s1_p3101t586o110sr1000or80;
+
+
 
 %% get the height timeseries
-[t1,h1] = extract_height_from_altbundle(S3AEsslingen_s1_p3101t586o110sr1000or80);
+[t1,h1] = extract_height_from_altbundle(data);
 
 %% extract the data from valid time
 % 07.Sep
