@@ -4,8 +4,8 @@ path_to_data = 'C:/Users/yuziq/Documents/gnss_ir_analyze/data/gauge/RhineStation
 
 data = ncinfo(path_to_data);
 
-t = data.Variables(34).Attributes(5).Value;
-surface_elevation = data.Variables(34).Attributes(7).Value;
+t = data.Variables(37).Attributes(5).Value;
+surface_elevation = data.Variables(37).Attributes(8).Value;
 
 unix_t = posixtime(datetime(t,'convertfrom','datenum'));
 
@@ -16,7 +16,6 @@ t_extr = datetime(unix_t_extract,'convertfrom','epochtime');
 
 figure
 scatter(t_extr,s_ele_extract)
-ylim([236,237])
 
 writematrix([[0;unix_t_extract'],[1;s_ele_extract']],name)
 end
