@@ -164,9 +164,15 @@ def split_data(data_dict:pd.DataFrame,starttime:datetime,\
             t2 = df_time.iloc[i+1]['time_tick']
             df_temp = dataframe[(pd.to_datetime(dataframe['time'])>t1)\
                 & (pd.to_datetime(dataframe['time'])<=t2)]
-            if df_temp.shape[0]==deltatime.seconds:
-                temp_list.append(df_temp)
-                temp_time_list.append(t1+deltatime/2)
+
+            ###
+            df_ele = list(df_temp['elevation'])
+            if all(x<=y for x, y in zip(df_ele[0:-1], df_ele[1:])) or \
+               all(x>=y for x, y in zip(df_ele[0:-1], df_ele[1:])):
+            ###
+                if df_temp.shape[0]==deltatime.seconds:
+                    temp_list.append(df_temp)
+                    temp_time_list.append(t1+deltatime/2)
         split_data_dict[satellite_code]['raw'] = temp_list
         split_data_dict[satellite_code]['time'] = temp_time_list
     return split_data_dict
