@@ -156,3 +156,5 @@ data/for_lab/*
 data/gauge/RhineStations.nc
 
 data/upload/*
+
+src/picture/*
