@@ -13,7 +13,7 @@ def gnss_ir_gui():
     GUI Framework
     '''
     # gui layout for generate rinex and compact
-    layout = [[sg.Input("E:/OneDrive/Studium/MA/data/20220526/2/5856_0526_213047.m00",\
+    layout = [[sg.Input("E:/OneDrive/Studium/MA/gnss_ir_analyze/data/20221127/2/5856_1127_094935.m00",\
                 key='raw_data'),sg.FileBrowse('raw_data',key='raw_data')],
             [sg.Text('Please give a rough measuring time')],
             [sg.Text('year'),sg.InputText('2022',key='year', size=(4,1)),sg.Text('month'),\
