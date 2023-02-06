@@ -108,7 +108,10 @@ def data_prepare(split_data_dict,frequency):
     for satellite_code in split_data_dict_copy:
         # get the right wavelength
         if satellite_code[0]=='R':
-            wavelength = WAVELENTH_GLONASS_S1
+            frequency_base = FREQUENCY_GLONASS_L1
+            channel = int(satellite_code[1:])
+            frequency_glo = frequency_base + channel * 0.5625 * 10**6
+            wavelength = C / frequency_glo
         else:
             wavelength = WAVELENTH_GPS_S1
 
