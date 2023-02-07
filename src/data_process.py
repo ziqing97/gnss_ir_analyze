@@ -212,7 +212,14 @@ def generate_timeseries(main_path, azimut_mask, elevation_mask, \
     height_ts = {}
     for t in signal_ts:
         p = signal_ts[t]
-        index = p==max(p)
-        h = frequency[index]
-        height_ts[t] = h[0]
+
+        index_peak, _ = signal.find_peaks(p)
+        if index_peak.size != 0:
+            p_inpeak = p[index_peak]
+            f_inpeak = frequency[index_peak]
+            index_max = p_inpeak==max(p_inpeak)
+            h = f_inpeak[index_max]
+            height_ts[t] = h[0]
+        else:
+            height_ts[t] = np.nan
     return height_ts
