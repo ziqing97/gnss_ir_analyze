@@ -40,4 +40,4 @@ def plot_timeseries(ts_antenne1, ts_antenne2, h_antenne_1, h_antenne_2,\
     ax.set_ylim([283,285])
     ax.legend(['gnss antenne 1','gnss antenne 2','gauge',retrack_method])
     fig.set_size_inches(9,3)
-    fig.savefig('picture/timeseries0811.png')
+    fig.savefig(f'picture/timeseries{datekey}.png')
