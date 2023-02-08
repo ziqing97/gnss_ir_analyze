@@ -32,13 +32,10 @@ def get_gauge_data(date_key):
         _type_: _description_
     """
     ts_gauge = pd.read_csv(f'../data/gauge/2022{date_key}_gauge.csv')
-    gauge_time = []
-    h_ts_gauge = []
+    ts_gauge_reform = {}
     for t,h in zip(ts_gauge['0'],ts_gauge['1']):
-        gauge_time.append(datetime.fromtimestamp(t,tz=timezone.utc))
-        h_ts_gauge.append(h)
-    return gauge_time,h_ts_gauge
-
+        ts_gauge_reform[datetime.fromtimestamp(t,tz=timezone.utc)] = h
+    return ts_gauge_reform
 def get_sentinel_data(date_key,method):
     """_summary_
 
@@ -49,10 +46,8 @@ def get_sentinel_data(date_key,method):
     Returns:
         _type_: _description_
     """
-    sentinel_time = []
-    h_ts_sentinel = []
+    ts_sentinel = {}
     df_sentinel = pd.read_csv(f'../data/altbundle/2022{date_key}sentinel.csv')
     for t,h in zip(df_sentinel['unixtime'],df_sentinel[method]):
-        sentinel_time.append(datetime.fromtimestamp(t,tz=timezone.utc))
-        h_ts_sentinel.append(h)
-    return sentinel_time,h_ts_sentinel
+        ts_sentinel[datetime.fromtimestamp(t,tz=timezone.utc)] = h
+    return ts_sentinel
