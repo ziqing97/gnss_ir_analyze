@@ -1,6 +1,5 @@
 function[] = generate_gauge_ts(t1,t2,name)
-path_to_data = 'C:/Users/yuziq/Documents/RhineStations.nc';
-path_to_data = 'C:/Users/yuziq/Documents/gnss_ir_analyze/data/gauge/RhineStations.nc';
+path_to_data = 'E:\OneDrive\Studium\MA\gnss_ir_analyze\data\gauge/RhineStations.nc';
 
 data = ncinfo(path_to_data);
 

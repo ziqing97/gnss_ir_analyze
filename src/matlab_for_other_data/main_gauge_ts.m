@@ -1,4 +1,7 @@
-folder = 'C:/Users/yuziq/Documents/gnss_ir_analyze/data/gauge/';
+folder = 'E:\OneDrive\Studium\MA\gnss_ir_analyze\data\gauge';
+path_to_data = 'E:\OneDrive\Studium\MA\gnss_ir_analyze\data\gauge/RhineStations.nc';
+
+data = ncinfo(path_to_data);
 
 t1 = posixtime(datetime(2022,8,11,8,30,0,'TimeZone','UTC'));
 t2 = posixtime(datetime(2022,8,11,11,30,0,'TimeZone','UTC'));
