@@ -18,8 +18,14 @@ C = 299792458 # m/s
 FREQUENCY_GPS_L1 = 1575.42 * 10**6
 WAVELENTH_GPS_S1 = C/FREQUENCY_GPS_L1
 
+FREQUENCY_GPS_L2 = 1227.6 * 10**6
+WAVELENTH_GPS_S2 = C/FREQUENCY_GPS_L2
+
 FREQUENCY_GLONASS_L1 = 1602 * 10**6
 WAVELENTH_GLONASS_S1 = C/FREQUENCY_GLONASS_L1
+
+FREQUENCY_GLONASS_L2 = 1246 * 10**6
+WAVELENTH_GLONASS_S2 = C/FREQUENCY_GLONASS_L2
 
 def calc_lsp_power(elevation_sort,snr_sort,frequency,wavelength):
     """
@@ -91,7 +97,7 @@ def generate_frequency(min_height,max_height):
     frequency = np.arange(min_height,max_height,0.001)
     return frequency
 
-def data_prepare(split_data_dict,frequency):
+def data_prepare(split_data_dict,frequency,carrier):
     """
     this function does all the necessary things
 
@@ -107,13 +113,22 @@ def data_prepare(split_data_dict,frequency):
 
     for satellite_code in split_data_dict_copy:
         # get the right wavelength
-        if satellite_code[0]=='R':
-            frequency_base = FREQUENCY_GLONASS_L1
-            channel = int(satellite_code[1:])
-            frequency_glo = frequency_base + channel * 0.5625 * 10**6
-            wavelength = C / frequency_glo
-        else:
-            wavelength = WAVELENTH_GPS_S1
+        if carrier == 'L1':
+            if satellite_code[0]=='R':
+                frequency_base = FREQUENCY_GLONASS_L1
+                channel = int(satellite_code[1:])
+                frequency_glo = frequency_base + channel * 0.5625 * 10**6
+                wavelength = C / frequency_glo
+            else:
+                wavelength = WAVELENTH_GPS_S1
+        elif carrier == 'L2':
+            if satellite_code[0]=='R':
+                frequency_base = FREQUENCY_GLONASS_L2
+                channel = int(satellite_code[1:])
+                frequency_glo = frequency_base + channel * 0.4375 * 10**6
+                wavelength = C / frequency_glo
+            else:
+                wavelength = WAVELENTH_GPS_S2
 
         # init the list for power
         split_data_dict_copy[satellite_code]['power'] = []
@@ -133,11 +148,12 @@ def data_prepare(split_data_dict,frequency):
 
             # do the lsp analyse
             elevation_sort = np.array([dataframe_sort['elevation']]).T
-            snr_sort = np.array([dataframe_sort['snr1']]).T
+            if carrier == 'L1':
+                snr_sort = np.array([dataframe_sort['snr1']]).T
+            elif carrier == 'L2':
+                snr_sort = np.array([dataframe_sort['snr2']]).T
             power = calc_lsp_power(elevation_sort,snr_sort,frequency,wavelength)
             split_data_dict_copy[satellite_code]['power'].append(power)
-
-            # get the possible height
     return split_data_dict_copy
 
 def generate_power_likelihood(result_dict):
@@ -172,7 +188,7 @@ def scale_power_to_unit_area(x,y):
     return y_scaled
 
 def generate_timeseries(main_path, azimut_mask, elevation_mask, \
-    min_height, max_height, t_range, month, day):
+    min_height, max_height, t_range, month, day, carrier):
     """
 
     Args:
@@ -200,7 +216,7 @@ def generate_timeseries(main_path, azimut_mask, elevation_mask, \
             elevation_mask=elevation_mask,sn1_trigger=True)
 
         split_data_dict = dafi.split_data(data_dict,starttime,endtime,deltatime)
-        result_dict = data_prepare(split_data_dict,frequency=frequency)
+        result_dict = data_prepare(split_data_dict,frequency=frequency,carrier=carrier)
 
         for satellite_code in result_dict:
             for t,p in zip(result_dict[satellite_code]['time'],\
