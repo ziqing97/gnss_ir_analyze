@@ -85,6 +85,12 @@ def generate_database(main_path):
             sn1_file = main_path + item
         if ext == '.sn2':
             sn2_file = main_path + item
+        if ext == '.sn5':
+            sn5_file = main_path + item
+        if ext == '.sn7':
+            sn7_file = main_path + item
+        if ext == '.sn8':
+            sn8_file = main_path + item
         if ext == '.ele':
             ele_file = main_path + item
         if ext == '.azi':
@@ -92,8 +98,12 @@ def generate_database(main_path):
 
     sn1_data = read_compact_data(sn1_file)
     sn2_data = read_compact_data(sn2_file)
+    sn5_data = read_compact_data(sn5_file)
+    sn7_data = read_compact_data(sn7_file)
+    sn8_data = read_compact_data(sn8_file)
     ele_data = read_compact_data(ele_file)
     azi_data = read_compact_data(azi_file)
-    data_list = {'sn1':sn1_data,'sn2':sn2_data,'ele':ele_data,'azi':azi_data}
+    data_list = {'sn1':sn1_data,'sn2':sn2_data,'sn8':sn8_data,\
+        'sn5':sn5_data,'sn7':sn7_data,'ele':ele_data,'azi':azi_data}
     return data_list
     
