@@ -32,6 +32,9 @@ def generate_dataframe(main_path):
     ele_data = data_dict['ele']
     sn1_data = data_dict['sn1']
     sn2_data = data_dict['sn2']
+    sn5_data = data_dict['sn5']
+    sn7_data = data_dict['sn7']
+    sn8_data = data_dict['sn8']
 
     satellite_list = data_dict['ele'].keys()
 
@@ -46,15 +49,37 @@ def generate_dataframe(main_path):
                 'snr1':sn1_data[satellite_code]['sn1']})
         else:
             df_snr1 = pd.DataFrame({'time':[],'snr1':[]})
+
         if satellite_code in sn2_data:
             df_snr2 = pd.DataFrame({'time':sn2_data[satellite_code]['time'],\
                 'snr2':sn2_data[satellite_code]['sn2']})
         else:
             df_snr2 = pd.DataFrame({'time':[],'snr2':[]})
 
+        if satellite_code in sn5_data:
+            df_snr5 = pd.DataFrame({'time':sn5_data[satellite_code]['time'],\
+                'snr5':sn5_data[satellite_code]['sn5']})
+        else:
+            df_snr5 = pd.DataFrame({'time':[],'snr5':[]})
+
+        if satellite_code in sn7_data:
+            df_snr7 = pd.DataFrame({'time':sn7_data[satellite_code]['time'],\
+                'snr7':sn7_data[satellite_code]['sn7']})
+        else:
+            df_snr7 = pd.DataFrame({'time':[],'snr7':[]})
+
+        if satellite_code in sn8_data:
+            df_snr8 = pd.DataFrame({'time':sn8_data[satellite_code]['time'],\
+                'snr8':sn8_data[satellite_code]['sn8']})
+        else:
+            df_snr8 = pd.DataFrame({'time':[],'snr8':[]})
+
         dataframe = pd.merge(df_azimut,df_elevation,on=['time'],how='left')
         dataframe = pd.merge(dataframe,df_snr1,on=['time'],how='left')
         dataframe = pd.merge(dataframe,df_snr2,on=['time'],how='left')
+        dataframe = pd.merge(dataframe,df_snr5,on=['time'],how='left')
+        dataframe = pd.merge(dataframe,df_snr7,on=['time'],how='left')
+        dataframe = pd.merge(dataframe,df_snr8,on=['time'],how='left')
         dataframe_dict[satellite_code] = dataframe
     return dataframe_dict
 

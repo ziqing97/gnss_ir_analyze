@@ -188,7 +188,7 @@ def scale_power_to_unit_area(x,y):
     return y_scaled
 
 def generate_timeseries(main_path, azimut_mask, elevation_mask, \
-    min_height, max_height, t_range, month, day, carrier):
+    min_height, max_height, t_range, year, month, day, carrier):
     """
 
     Args:
@@ -206,9 +206,9 @@ def generate_timeseries(main_path, azimut_mask, elevation_mask, \
     signal_ts = {}
 
     for dt in tqdm(range(0,t_range-1)):
-        starttime = datetime(year=2022,month=month,day=day,hour=8,\
+        starttime = datetime(year=year,month=month,day=day,hour=8,\
             minute=0+dt,second=0,tzinfo=timezone.utc)
-        endtime = datetime(year=2022,month=month,day=day,hour=14,\
+        endtime = datetime(year=year,month=month,day=day,hour=14,\
             minute=0+dt,second=0,tzinfo=timezone.utc)
         deltatime = timedelta(minutes=t_range)
 
