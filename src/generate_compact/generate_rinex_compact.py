@@ -20,16 +20,14 @@ def call_teqc(raw_data, receiver_arg, main_result_name, time_arg):
     main_result_name = target_folder + main_result_name
 
 
-    add_obs_arg = "+obs " + main_result_name + ".obs"
-    add_nav_arg = "+nav " + main_result_name + ".gps,"+ main_result_name +\
-        ".glo,"+ main_result_name + ".bei,"+ main_result_name + ".gal"
+    add_obs_arg = f"+obs {main_result_name}.22o"
+    add_nav_arg = f"+nav {main_result_name}.22n,{main_result_name}.22g,{main_result_name}.22d,{main_result_name}.22l"
 
 
-    teqc_generate_rinex_command = teqc_path + " " + receiver_arg + " " + time_arg + " " +\
-        add_obs_arg + " " + add_nav_arg + " " + raw_data
+    teqc_generate_rinex_command = f"{teqc_path} {receiver_arg} {time_arg} {add_obs_arg} {add_nav_arg} +C2 +L5 +L6 +L7 +L8 {raw_data}"
     os.system(teqc_generate_rinex_command)
 
     teqc_generate_compact_commad = teqc_path + " +qc +plot -nav " + main_result_name +\
-        ".gps,"+ main_result_name + ".glo,"+ main_result_name + ".gal" + " " +\
-            main_result_name + ".obs" + " > " + main_result_name + ".qcq"
+        ".22n,"+ main_result_name + ".22g,"+ main_result_name + ".22l" + " " +\
+            main_result_name + ".22o" + " > " + main_result_name + ".qcq"
     os.system(teqc_generate_compact_commad)
