@@ -23,19 +23,14 @@ def generate_dataframe(main_path):
     Returns:
         a dict of pandas dataframe where the keys
         are the the satellite names and values are
-        a dataframe with elevation, azimut, snr1,
-        snr2
+        a dataframe with elevation, azimut and valid
+        snr data
     '''
     data_dict = rcd.generate_database(main_path)
 
     azi_data = data_dict['azi']
     ele_data = data_dict['ele']
-    sn1_data = data_dict['sn1']
-    sn2_data = data_dict['sn2']
-    sn5_data = data_dict['sn5']
-    sn7_data = data_dict['sn7']
-    sn8_data = data_dict['sn8']
-
+    snr_list = ['snr1','snr2','snr5','snr7','snr8']
     satellite_list = data_dict['ele'].keys()
 
     dataframe_dict = {}
@@ -44,44 +39,31 @@ def generate_dataframe(main_path):
             'azimut':azi_data[satellite_code]['azi']})
         df_elevation = pd.DataFrame({'time':ele_data[satellite_code]['time'],\
             'elevation':ele_data[satellite_code]['ele']})
-        if satellite_code in sn1_data:
-            df_snr1 = pd.DataFrame({'time':sn1_data[satellite_code]['time'],\
-                'snr1':sn1_data[satellite_code]['sn1']})
-        else:
-            df_snr1 = pd.DataFrame({'time':[],'snr1':[]})
-
-        if satellite_code in sn2_data:
-            df_snr2 = pd.DataFrame({'time':sn2_data[satellite_code]['time'],\
-                'snr2':sn2_data[satellite_code]['sn2']})
-        else:
-            df_snr2 = pd.DataFrame({'time':[],'snr2':[]})
-
-        if satellite_code in sn5_data:
-            df_snr5 = pd.DataFrame({'time':sn5_data[satellite_code]['time'],\
-                'snr5':sn5_data[satellite_code]['sn5']})
-        else:
-            df_snr5 = pd.DataFrame({'time':[],'snr5':[]})
-
-        if satellite_code in sn7_data:
-            df_snr7 = pd.DataFrame({'time':sn7_data[satellite_code]['time'],\
-                'snr7':sn7_data[satellite_code]['sn7']})
-        else:
-            df_snr7 = pd.DataFrame({'time':[],'snr7':[]})
-
-        if satellite_code in sn8_data:
-            df_snr8 = pd.DataFrame({'time':sn8_data[satellite_code]['time'],\
-                'snr8':sn8_data[satellite_code]['sn8']})
-        else:
-            df_snr8 = pd.DataFrame({'time':[],'snr8':[]})
 
         dataframe = pd.merge(df_azimut,df_elevation,on=['time'],how='left')
-        dataframe = pd.merge(dataframe,df_snr1,on=['time'],how='left')
-        dataframe = pd.merge(dataframe,df_snr2,on=['time'],how='left')
-        dataframe = pd.merge(dataframe,df_snr5,on=['time'],how='left')
-        dataframe = pd.merge(dataframe,df_snr7,on=['time'],how='left')
-        dataframe = pd.merge(dataframe,df_snr8,on=['time'],how='left')
+        df_snr_dict = {}
+        for item in snr_list:
+            df_snr_dict[item] = extract_snr_data(satellite_code,data_dict,item)
+            dataframe = pd.merge(dataframe,df_snr_dict[item],on=['time'],how='left')
         dataframe_dict[satellite_code] = dataframe
     return dataframe_dict
+
+def extract_snr_data(satellite_code, data_dict, snr_code):
+    """
+    Args:
+        satellite_code (_type_): _description_
+        data_dict (_type_): _description_
+        snr_code (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    if satellite_code in data_dict[snr_code]:
+        df_snr = pd.DataFrame({'time':data_dict[snr_code][satellite_code]['time'],\
+            snr_code:data_dict[snr_code][satellite_code][snr_code]})
+    else:
+        df_snr = pd.DataFrame({'time':[],snr_code:[]})
+    return df_snr
 
 def azimut_filter(dataframe:pd.DataFrame,azimut_mask:list) -> pd.DataFrame:
     '''
@@ -121,7 +103,7 @@ def elevation_filter(dataframe:pd.DataFrame,elevation_mask:list) -> pd.DataFrame
     dataframe = dataframe[elevation_index]
     return dataframe
 
-def sn1_filter(dataframe:pd.DataFrame) -> pd.DataFrame:
+def snr_filter(dataframe:pd.DataFrame, snr:str) -> pd.DataFrame:
     """
     this function filter out the data without L1 snr
     Args:
@@ -130,11 +112,12 @@ def sn1_filter(dataframe:pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: same as input, the invalid data outfiltered
     """
-    dataframe = dataframe[dataframe['snr1'].notnull()]
-    return dataframe
+    dataframe = dataframe[dataframe[snr].notnull()]
+    dataframe_copy = dataframe[['time','azimut','elevation',snr]]
+    return dataframe_copy
 
 def clean_data(main_path:str, elevation_mask:list,\
-    azimut_mask:list, sn1_trigger:bool)->pd.DataFrame:
+    azimut_mask:list, trigger:str)->pd.DataFrame:
     """
     this function does the necessary filtering for the data
     Args:
@@ -150,8 +133,8 @@ def clean_data(main_path:str, elevation_mask:list,\
     for satellite_code in satellite_list:
         data_dict[satellite_code] = azimut_filter(data_dict[satellite_code],azimut_mask)
         data_dict[satellite_code] = elevation_filter(data_dict[satellite_code],elevation_mask)
-        if sn1_trigger:
-            data_dict[satellite_code] = sn1_filter(data_dict[satellite_code])
+
+        data_dict[satellite_code] = snr_filter(data_dict[satellite_code],trigger)
         if data_dict[satellite_code].empty:
             data_empty_code.append(satellite_code)
 
@@ -160,7 +143,7 @@ def clean_data(main_path:str, elevation_mask:list,\
     return data_dict
 
 def split_data(data_dict:pd.DataFrame,starttime:datetime,\
-    endtime:datetime,deltatime:timedelta)->dict:
+    endtime:datetime,deltatime:timedelta,sample_rate:int)->dict:
     """
     this function split the whole dataset in to small parts in certain time intervals
     Args:
@@ -195,7 +178,7 @@ def split_data(data_dict:pd.DataFrame,starttime:datetime,\
             if all(x<=y for x, y in zip(df_ele[0:-1], df_ele[1:])) or \
                all(x>=y for x, y in zip(df_ele[0:-1], df_ele[1:])):
             ###
-                if df_temp.shape[0]==deltatime.seconds:
+                if df_temp.shape[0]==deltatime.seconds/sample_rate:
                     temp_list.append(df_temp)
                     temp_time_list.append(t1+deltatime/2)
         split_data_dict[satellite_code]['raw'] = temp_list
