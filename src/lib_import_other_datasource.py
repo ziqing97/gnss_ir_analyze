@@ -9,17 +9,22 @@ def get_antenne_height(key):
     """_summary_
 
     Args:
-        key (_type_): _description_
+        key (str): _description_
 
     Returns:
-        _type_: _description_
+        dict: antenne height dictionary
     """
     with open('../data/generated_data/antenne_height.pkl', 'rb') as f:
         df_ante_h = pickle.load(f)
     ante_h = {}
     index = df_ante_h[df_ante_h['date'] == key]
-    ante_h['2'] = float(index['antenne2'])
-    ante_h['3'] = float(index['antenne3'])
+    if key == '0216':
+        ante_h['1'] = float(index['antenne1'])
+        ante_h['2'] = float(index['antenne2'])
+        ante_h['2r'] = float(index['antenne2r'])
+    else:
+        ante_h['2'] = float(index['antenne2'])
+        ante_h['3'] = float(index['antenne3'])
     return ante_h
 
 def get_gauge_data(date_key):
@@ -36,6 +41,7 @@ def get_gauge_data(date_key):
     for t,h in zip(ts_gauge['0'],ts_gauge['1']):
         ts_gauge_reform[datetime.fromtimestamp(t,tz=timezone.utc)] = h
     return ts_gauge_reform
+
 def get_sentinel_data(date_key,method):
     """_summary_
 
