@@ -1,0 +1,46 @@
+esss                                                        STATION
+Static      10.000000 10.000000 10.000000                   POS MODE/PRIORI (meter)
+YES                                                         OBS STRICT EDITING
+2023  2 16  7 40 15.00                                      OBS FIRST EPOCH
+2023  2 16 14  7 35.00                                      OBS LAST EPOCH
+    1.00                                                    OBS INTERVAL (sec)
+    7.00                                                    OBS MASK ANGLE (deg)
+    0.30                                                    MEASUREMENT NOISE PSEUDORANGE (1-SIGMA, meter)
+    0.01                                                    MEASUREMENT NOISE CARRIER PHASE (1-SIGMA, cycle)
+WUM0MGXRAP_20230470000_01D_01M_ORB.SP3                      SAT ORBIT
+WUM0MGXRAP_20230470000_01D_30S_CLK.CLK                      SAT CLOCK
+WUM0MGXRAP_20230470000_01D_01D_ERP.ERP                      SAT ERP
+WUM0MGXRAP_20230470000_01D_30S_ATT.OBX                      SAT ATTITUDE
+WUM0MGXRAP_20230470000_01D_01D_ABS.BIA                      SAT BIAS
+LEICA GS15                                                  SITE RECEIVER TYPE
+LEIGS15         NONE                                        SITE ANTENNA TYPE
+        0.0000        0.0000        0.0000                  SITE ANTENNA E/N/H (meter)
+IGS20_2247                                                  TABLE ANTEX
+STO                                                         TROP ZENITH
+PWC:720                                                     TROP GRADIENT
+NO                                                          IONO 2ND
+SOLID  POLE                                                 TIDES
+YES  GPS    15  GAL    11  BDS2    0  BDS3    0  QZSS    0  AMB FIXING
+  600.00                                                    AMB DURATION (sec)
+   15.00                                                    AMB CUTOFF (deg)
+    0.20    0.15 1000.00                                    AMB WIDELANE
+    0.15    0.15 1000.00                                    AMB NARROWLANE
+    3       4       1.80    3.00                            AMB SEARCH
+Start Field Description                                     COMMENT
+Name                                                        STATION NAME
+Mjd                                                         MODIFIED JULIAN DAY
+X                                                           X COORDINATE (meter)
+Y                                                           Y COORDINATE (meter)
+Z                                                           Z COORDINATE (meter)
+Sx                                                          DIAGONAL COFACTOR OF X COORDINATE
+Sy                                                          DIAGONAL COFACTOR OF Y COORDINATE
+Sz                                                          DIAGONAL COFACTOR OF Z COORDINATE
+Rxy                                                         OFF-DIAGONAL COFACTOR OF X AND Y COORDINATES
+Rxz                                                         OFF-DIAGONAL COFACTOR OF X AND Z COORDINATES
+Ryz                                                         OFF-DIAGONAL COFACTOR OF Y AND Z COORDINATES
+Sig0                                                        SQUARE ROOT OF VARIANCE FACTOR (meter)
+Nobs                                                        NUMBER OF OBSERVATIONS
+End Field Description                                       COMMENT
+                                                            END OF HEADER
+*Name         Mjd              X              Y              Z                       Sx                       Sy                       Sz                      Rxy                      Rxz                      Ryz                     Sig0           Nobs
+ esss  59991.4541   4159724.8575    682599.9203   4770917.1054     0.16356476876032E-08     0.30783407272183E-09     0.19083583128946E-08     0.28568018547533E-09     0.14386542287057E-08     0.25853522024698E-09     0.28697225771136E+01         439353
