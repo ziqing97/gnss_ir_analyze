@@ -23,8 +23,8 @@ def call_teqc(raw_data, receiver_arg, main_result_name, time_arg):
     add_obs_arg = f"+obs {main_result_name}.22o"
     add_nav_arg = f"+nav {main_result_name}.22n,{main_result_name}.22g,{main_result_name}.22d,{main_result_name}.22l"
 
-
     teqc_generate_rinex_command = f"{teqc_path} {receiver_arg} {time_arg} {add_obs_arg} {add_nav_arg} +C2 +L5 +L6 +L7 +L8 {raw_data}"
+    print(teqc_generate_rinex_command)
     os.system(teqc_generate_rinex_command)
 
     teqc_generate_compact_commad = teqc_path + " +qc +plot -nav " + main_result_name +\
