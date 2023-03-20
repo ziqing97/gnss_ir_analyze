@@ -4,8 +4,8 @@ This script extracts the data from file with
 are generated from teqc.
 
 Author: Ziqing Yu
-generated on 12/06/2022
-last edited on 12/06/2022
+generated on 05/03/2023
+last edited on 05/03/2023
 """
 from datetime import datetime,timezone,timedelta
 import os
@@ -23,7 +23,11 @@ def read_compact_data(file_name):
         satellite
     """
     # get the data_type
-    data_type = file_name[-3:-1]+file_name[-1]
+    data_type = file_name[-3:]
+    if data_type == 'ele' or data_type == 'azi':
+        pass
+    else:
+        data_type = f'{file_name[-3:-1]}r{file_name[-1]}'
     # init satellite list
     data_dict = {}
 
@@ -78,32 +82,37 @@ def generate_database(main_path):
     """
     main_path = main_path+'/'
     file_list = os.listdir(main_path)
+    data_list = {}
     for item in file_list:
         file_ext = os.path.splitext(item)
         ext = file_ext[1]
         if ext == '.sn1':
             sn1_file = main_path + item
+            sn1_data = read_compact_data(sn1_file)
+            data_list['snr1'] = sn1_data
         if ext == '.sn2':
             sn2_file = main_path + item
+            sn2_data = read_compact_data(sn2_file)
+            data_list['snr2'] = sn2_data
         if ext == '.sn5':
             sn5_file = main_path + item
+            sn5_data = read_compact_data(sn5_file)
+            data_list['snr5'] = sn5_data
         if ext == '.sn7':
             sn7_file = main_path + item
+            sn7_data = read_compact_data(sn7_file)
+            data_list['snr7'] = sn7_data
         if ext == '.sn8':
             sn8_file = main_path + item
+            sn8_data = read_compact_data(sn8_file)
+            data_list['snr8'] = sn8_data
         if ext == '.ele':
             ele_file = main_path + item
+            ele_data = read_compact_data(ele_file)
+            data_list['ele'] = ele_data
         if ext == '.azi':
             azi_file = main_path + item
-
-    sn1_data = read_compact_data(sn1_file)
-    sn2_data = read_compact_data(sn2_file)
-    sn5_data = read_compact_data(sn5_file)
-    sn7_data = read_compact_data(sn7_file)
-    sn8_data = read_compact_data(sn8_file)
-    ele_data = read_compact_data(ele_file)
-    azi_data = read_compact_data(azi_file)
-    data_list = {'sn1':sn1_data,'sn2':sn2_data,'sn8':sn8_data,\
-        'sn5':sn5_data,'sn7':sn7_data,'ele':ele_data,'azi':azi_data}
+            azi_data = read_compact_data(azi_file)
+            data_list['azi'] = azi_data
     return data_list
     
