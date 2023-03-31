@@ -12,6 +12,7 @@ retrackname  = {'OCES','OCEP','OGS','ISS','ICES','ICEP','SICS'};
 table_head = [{'unixtime','lat','lon'}, retrackname];
 
 sig_tab = [];
+time_list = [];
 for i=1:length(retrack)
     if i==1
         time = datetime(WL_struct.(retrack{i}).Time,'ConvertFrom','datenum','TimeZone','UTC');
@@ -20,6 +21,7 @@ for i=1:length(retrack)
         sig_tab = [sig_tab,posixtime(time),lat,lon];
     end
     sig_tab = [sig_tab,WL_struct.(retrack{i}).Signal];
+    time_list = [time_list, time];
 end
 
 % 11.Aug
@@ -106,3 +108,20 @@ ylabel('meter')
 legend(retrackname)
 T = array2table(h_sentinel,'VariableNames',table_head);
 writetable(T,'../../data/altbundle/20221127sentinel.csv')
+
+% 15.March
+time_start = datetime(2023,3,15,7,0,0,'TimeZone','UTC');
+time_end = datetime(2023,3,15,18,0,0,'TimeZone','UTC');
+
+index = (time>time_start) & (time<time_end);
+h_sentinel = sig_tab(index,:);
+figure
+hold on
+for i=1:7
+    scatter(h_sentinel(:,1),h_sentinel(:,i+3))
+end
+title("15.March")
+ylabel('meter')
+legend(retrackname)
+T = array2table(h_sentinel,'VariableNames',table_head);
+writetable(T,'../../data/altbundle/20230315sentinel.csv')
