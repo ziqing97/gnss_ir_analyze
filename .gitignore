@@ -161,3 +161,6 @@ src/picture/*
 
 *.asv
 data/
+.DS_Store
+.DS_Store
+src/.DS_Store
