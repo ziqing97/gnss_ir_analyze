@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 # pylint:disable=invalid-name
 
 def plot_timeseries(ts_antenne1, ts_antenne2, h_antenne_1, h_antenne_2,\
-     tsc_1,tsc_2,ts_gauge, ts_sentinel, retrack_method):
+     ts_gauge, ts_sentinel, retrack_method):
     """
     This function plots the timeseries together.
     Args:
@@ -33,38 +33,30 @@ def plot_timeseries(ts_antenne1, ts_antenne2, h_antenne_1, h_antenne_2,\
     date = t1.day
     month = t2.month
     plt.rcParams.update({'font.size': 10})
-    fig,ax = plt.subplots(2)
+    fig,ax = plt.subplots()
     datekey = f'{date}{month}'
 
     # plot height
     legend = ['GNSS antenne 1','GNSS antenne 2']
-    ax[0].scatter(list(ts_antenne1.keys()), list(h_ts_0811_2), s=1)
-    ax[0].scatter(list(ts_antenne2.keys()), list(h_ts_0811_3), s=1)
+    ax.scatter(list(ts_antenne1.keys()), list(h_ts_0811_2), s=1)
+    ax.scatter(list(ts_antenne2.keys()), list(h_ts_0811_3), s=1)
     if ts_gauge:
-        ax[0].scatter(list(ts_gauge.keys()), list(ts_gauge.values()), s=10)
+        ax.scatter(list(ts_gauge.keys()), list(ts_gauge.values()), s=10,color='black')
         legend.append('Gauge')
     if ts_sentinel:
-        ax[0].scatter(list(ts_sentinel.keys()), list(ts_sentinel.values()), s=10)
+        ax.scatter(list(ts_sentinel.keys()), list(ts_sentinel.values()), s=10)
         legend.append(retrack_method)
-    ax[0].set_xlabel('time')
-    ax[0].set_ylabel('heihgt [meter]')
-    ax[0].set_title(\
+    ax.set_xlabel('time')
+    ax.set_ylabel('heihgt [meter]')
+    ax.set_title(\
         f'water surface height {date}.{month} (elevation 10-30, time window 30 minutes)')
-    ax[0].set_xlim([t1,t2])
-    ax[0].set_ylim([283,285])
-    ax[0].legend(legend)
+    ax.set_xlim([t1,t2])
+    ax.set_ylim([283.5,285.5])
+    ax.grid()
+    ax.legend(legend)
 
-    # plot count
-    ax[1].scatter(tsc_1.keys(),tsc_1.values(),s=1)
-    ax[1].scatter(tsc_2.keys(),tsc_2.values(),s=1)
-    ax[1].set_xlim([t1,t2])
-    ax[1].set_xlabel('time')
-    ax[1].set_ylabel('measurements count')
-    ax[1].legend(['GNSS antenne 1','GNSS antenne 2'])
-
-
-    fig.set_size_inches(9,5)
-    fig.savefig(f'picture/timeseries{datekey}.png')
+    fig.set_size_inches(10,4)
+    fig.savefig(f'../../write/bilder/kapitel4/timeseries{datekey}.png')
 
 def plot_timeseries_0216(ts_antenne1, ts_antenne2, h_antenne_1, h_antenne_2):
     """
