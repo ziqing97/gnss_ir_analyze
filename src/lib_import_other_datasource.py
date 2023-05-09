@@ -56,7 +56,7 @@ def get_sentinel_data(date_key,method):
         _type_: _description_
     """
     ts_sentinel = {}
-    df_sentinel = pd.read_csv(f'../data/altbundle/2022{date_key}sentinel.csv')
+    df_sentinel = pd.read_csv(f'../data/altbundle/{date_key}sentinel.csv')
     for t,h in zip(df_sentinel['unixtime'],df_sentinel[method]):
         ts_sentinel[datetime.fromtimestamp(t,tz=timezone.utc)] = h
     return ts_sentinel
