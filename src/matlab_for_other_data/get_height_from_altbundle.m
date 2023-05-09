@@ -109,6 +109,24 @@ legend(retrackname)
 T = array2table(h_sentinel,'VariableNames',table_head);
 writetable(T,'../../data/altbundle/20221127sentinel.csv')
 
+
+% 16.February
+time_start = datetime(2023,2,16,7,0,0,'TimeZone','UTC');
+time_end = datetime(2023,2,16,18,0,0,'TimeZone','UTC');
+
+index = (time>time_start) & (time<time_end);
+h_sentinel = sig_tab(index,:);
+figure
+hold on
+for i=1:7
+    scatter(h_sentinel(:,1),h_sentinel(:,i+3))
+end
+title("16.February")
+ylabel('meter')
+legend(retrackname)
+T = array2table(h_sentinel,'VariableNames',table_head);
+writetable(T,'../../data/altbundle/20230216sentinel.csv')
+
 % 15.March
 time_start = datetime(2023,3,15,7,0,0,'TimeZone','UTC');
 time_end = datetime(2023,3,15,18,0,0,'TimeZone','UTC');
