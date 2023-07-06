@@ -232,6 +232,7 @@ class libDataProcess():
             _type_: _description_
         """
         height_ts = {}
+        uc_ts = {}
         for t in signal_ts:
             p = signal_ts[t]
             index = (frequency<=max_height) & (frequency>=min_height)
@@ -247,7 +248,26 @@ class libDataProcess():
                 height_ts[t] = h[0]
             else:
                 height_ts[t] = np.nan
-        return height_ts
+            if index_peak.size != 0:
+                max_peak_index = frequency == height_ts[t]
+                left = min_height
+                right = max(frequency[frequency<(frequency[max_peak_index] + \
+                                                 (frequency[max_peak_index]-left))])
+                area_index = np.bitwise_and(frequency>=left,frequency<=right)
+                area_x = np.diff(frequency[area_index])
+                area_y_origin = (p[area_index][0:-1]+p[area_index][1:])/2
+                scale = np.sum(np.multiply(area_x,area_y_origin))
+                area_y = area_y_origin/scale
+                i = 0
+                while np.sum(np.multiply(area_y[i:len(area_y)-i],area_x[i:len(area_y)-i]))>0.68:
+                    i+=1
+                    if i>len(area_y)/2-1:
+                        break
+                uc_ts[t] = np.abs(height_ts[t]-frequency[area_index][i])
+            else:
+                uc_ts[t] = np.nan
+
+        return height_ts, uc_ts
 
     def generate_timeseries(self,main_path, azimut_mask, elevation_mask, \
         min_height, max_height, t_range, starttime, endtime, trigger_list, sample_rate):
@@ -291,5 +311,5 @@ class libDataProcess():
                             else:
                                 signal_ts[t] = p
                                 count_ts[t] = 1
-        height_ts = self.extract_height(signal_ts,frequency,max_height,min_height)
-        return height_ts,count_ts
+        height_ts, uc_ts = self.extract_height(signal_ts,frequency,max_height,min_height)
+        return height_ts, uc_ts, count_ts
